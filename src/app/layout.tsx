@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Instrument_Serif } from "next/font/google";
 import { ChatWidget } from "@/components/chat/chat-widget";
 import { StickyHeader } from "@/components/ui/sticky-header";
+import { CustomCursor } from "@/components/ui/custom-cursor";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 import "./globals.css";
 
 const inter = Inter({
@@ -13,6 +15,13 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+});
+
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -68,8 +77,10 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} min-h-screen antialiased`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${instrumentSerif.variable} min-h-screen antialiased`}
       >
+        <CustomCursor />
+        <ScrollProgress />
         <StickyHeader />
         {children}
         <ChatWidget />

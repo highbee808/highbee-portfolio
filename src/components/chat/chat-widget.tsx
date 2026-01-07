@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, X } from 'lucide-react'
+import { MessageSquare, X } from 'lucide-react'
 import { ChatWindow } from './chat-window'
 
 export function ChatWidget() {
@@ -13,9 +13,7 @@ export function ChatWidget() {
       {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed bottom-24 right-6 z-50">
-            <ChatWindow onClose={() => setIsOpen(false)} />
-          </div>
+          <ChatWindow onClose={() => setIsOpen(false)} />
         )}
       </AnimatePresence>
 
@@ -24,7 +22,7 @@ export function ChatWidget() {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-slate-500 to-slate-400 text-white flex items-center justify-center shadow-lg shadow-slate-400/30 hover:shadow-slate-400/50 transition-shadow"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-red-600 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/30 hover:shadow-red-600/50 transition-shadow"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -46,9 +44,9 @@ export function ChatWidget() {
               transition={{ duration: 0.2 }}
               className="relative"
             >
-              <MessageCircle className="w-6 h-6" />
+              <MessageSquare className="w-6 h-6" />
               {/* Notification dot */}
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-slate-500" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-red-600" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -57,7 +55,7 @@ export function ChatWidget() {
       {/* Pulse animation when closed */}
       {!isOpen && (
         <div className="fixed bottom-6 right-6 z-40 pointer-events-none">
-          <div className="w-14 h-14 rounded-full bg-slate-400 animate-ping opacity-20" />
+          <div className="w-14 h-14 rounded-full bg-red-600 animate-ping opacity-20" />
         </div>
       )}
     </>

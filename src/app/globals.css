@@ -38,6 +38,7 @@
   --color-error: var(--error);
   --font-sans: var(--font-inter);
   --font-display: var(--font-space-grotesk);
+  --font-serif: var(--font-instrument-serif);
 }
 
 html {
@@ -50,19 +51,23 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Glassmorphism utilities - refined for the dark theme */
+/* Glassmorphism utilities - optimized for performance */
 .glass {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .glass-strong {
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Animated gradient background - red shimmer */

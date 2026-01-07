@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { X, Send, Sparkles } from 'lucide-react'
+import { X, Send } from 'lucide-react'
+import Image from 'next/image'
 import { ChatMessage } from './chat-message'
 
 interface Message {
@@ -96,18 +97,35 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 20, scale: 0.95 }}
-      className="w-[380px] h-[550px] rounded-2xl overflow-hidden flex flex-col bg-[#0d0d14] border border-white/10 shadow-2xl shadow-black/50"
-    >
+    <>
+      {/* Backdrop for mobile */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="fixed inset-0 bg-black/60 z-50 md:hidden"
+      />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ type: 'tween', duration: 0.2 }}
+        className="fixed z-50 inset-x-3 bottom-3 top-auto h-[85vh] md:inset-auto md:bottom-24 md:right-6 md:w-[380px] md:h-[550px] rounded-2xl overflow-hidden flex flex-col bg-[#0d0d14] border border-white/10 shadow-2xl shadow-black/50"
+      >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-white/10 bg-gradient-to-r from-slate-500/10 to-slate-500/10">
+      <div className="flex items-center justify-between p-4 border-b border-white/10 bg-gradient-to-r from-red-600/10 to-red-700/10">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-400 to-slate-400 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-red-500/50">
+              <Image
+                src="/images/profile-cartoon.png"
+                alt="Highbee"
+                width={40}
+                height={40}
+                className="object-cover"
+              />
             </div>
             <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0d0d14]" />
           </div>
@@ -135,8 +153,14 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
 
         {isLoading && (
           <div className="flex gap-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-slate-400 to-slate-400 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-full overflow-hidden border border-red-500/50 flex-shrink-0">
+              <Image
+                src="/images/profile-cartoon.png"
+                alt="Highbee"
+                width={32}
+                height={32}
+                className="object-cover"
+              />
             </div>
             <div className="bg-white/10 rounded-2xl rounded-tl-md px-4 py-3">
               <div className="flex gap-1.5">
@@ -157,7 +181,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
                 <button
                   key={q}
                   onClick={() => handleSend(q)}
-                  className="text-xs px-3 py-1.5 rounded-full bg-white/5 text-white/70 hover:bg-slate-400/20 hover:text-slate-200 transition-colors border border-white/10"
+                  className="text-xs px-3 py-1.5 rounded-full bg-white/5 text-white/70 hover:bg-red-600/20 hover:text-red-200 transition-colors border border-white/10"
                 >
                   {q}
                 </button>
@@ -177,19 +201,20 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
             onKeyDown={handleKeyDown}
             placeholder="Ask me anything..."
             disabled={isLoading}
-            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-slate-400/50 disabled:opacity-50 transition-colors"
+            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-red-500/50 disabled:opacity-50 transition-colors"
           />
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSend()}
             disabled={isLoading || !input.trim()}
-            className="w-12 h-12 rounded-xl bg-gradient-to-r from-slate-500 to-slate-400 flex items-center justify-center text-white disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+            className="w-12 h-12 rounded-xl bg-gradient-to-r from-red-600 to-red-700 flex items-center justify-center text-white disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
           >
             <Send className="w-5 h-5" />
           </motion.button>
         </div>
       </div>
-    </motion.div>
+      </motion.div>
+    </>
   )
 }

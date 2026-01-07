@@ -1,7 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Bot, User } from 'lucide-react'
+import { User } from 'lucide-react'
+import Image from 'next/image'
 
 interface ChatMessageProps {
   message: {
@@ -20,25 +21,27 @@ export function ChatMessage({ message }: ChatMessageProps) {
       className={`flex gap-3 ${isUser ? 'flex-row-reverse' : ''}`}
     >
       {/* Avatar */}
-      <div
-        className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-          isUser
-            ? 'bg-slate-400'
-            : 'bg-gradient-to-br from-slate-400 to-slate-400'
-        }`}
-      >
-        {isUser ? (
+      {isUser ? (
+        <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
           <User className="w-4 h-4 text-white" />
-        ) : (
-          <Bot className="w-4 h-4 text-white" />
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="w-8 h-8 rounded-full overflow-hidden border border-red-500/50 flex-shrink-0">
+          <Image
+            src="/images/profile-cartoon.png"
+            alt="Highbee"
+            width={32}
+            height={32}
+            className="object-cover"
+          />
+        </div>
+      )}
 
       {/* Message bubble */}
       <div
         className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
           isUser
-            ? 'bg-slate-400 text-white rounded-tr-md'
+            ? 'bg-red-600 text-white rounded-tr-md'
             : 'bg-white/10 text-white/90 rounded-tl-md'
         }`}
       >

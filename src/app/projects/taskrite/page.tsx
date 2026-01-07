@@ -547,7 +547,7 @@ export default function TaskRiteCaseStudy() {
             ← Back to Portfolio
           </Link>
           <div className="text-white/30 text-sm">
-            © 2025 Ibrahim Lawal. All rights reserved.
+            © 2026 Ibrahim Lawal. All rights reserved.
           </div>
         </div>
       </footer>

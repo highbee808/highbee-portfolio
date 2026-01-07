@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { ParticleBackground } from '@/components/animations/particle-background'
 import { TypingAnimation } from '@/components/animations/typing-animation'
-import { MessageCircle, Code2, Braces, Terminal } from 'lucide-react'
+import { MessageCircle, Code2, Braces, Terminal, Download } from 'lucide-react'
 
 const phrases = ['AI Integration', 'Full-Stack Apps', 'Rapid Prototyping']
 
@@ -32,18 +32,6 @@ const itemVariants = {
   },
 }
 
-const floatVariants = {
-  initial: { y: 0 },
-  animate: {
-    y: [-8, 8, -8],
-    transition: {
-      duration: 6,
-      repeat: Infinity,
-      ease: 'easeInOut' as const,
-    },
-  },
-}
-
 // Floating decorative elements
 const floatingElements = [
   { Icon: Code2, top: '15%', left: '8%', delay: 0, size: 24 },
@@ -65,54 +53,18 @@ export function Hero() {
       {/* Layered backgrounds */}
       <div className="absolute inset-0 bg-[#0a0a0f]" />
 
-      {/* Animated gradient orbs - red theme */}
+      {/* Static gradient orbs - no animation for better performance */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-red-900/20 blur-[120px]"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            x: [0, -50, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] rounded-full bg-zinc-700/30 blur-[120px]"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-red-600/10 blur-[100px]"
-        />
+        <div className="absolute -top-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-red-900/20 blur-[80px]" />
+        <div className="absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] rounded-full bg-zinc-700/20 blur-[80px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-red-600/10 blur-[60px]" />
       </div>
 
-      {/* Floating decorative code icons */}
+      {/* Static decorative code icons */}
       {floatingElements.map((el, index) => (
-        <motion.div
+        <div
           key={index}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{
-            opacity: [0.15, 0.3, 0.15],
-            scale: 1,
-            y: [0, -20, 0],
-            rotate: [0, 5, -5, 0],
-          }}
-          transition={{
-            delay: el.delay,
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute hidden lg:block text-red-500/30"
+          className="absolute hidden lg:block text-red-500/20"
           style={{
             top: el.top,
             left: el.left,
@@ -121,7 +73,7 @@ export function Hero() {
           }}
         >
           <el.Icon size={el.size} strokeWidth={1.5} />
-        </motion.div>
+        </div>
       ))}
 
       {/* Scanline overlay for retro-tech feel */}
@@ -215,7 +167,7 @@ export function Hero() {
               Solve
             </motion.span>
             <svg
-              className="absolute -bottom-2 left-0 w-full"
+              className="absolute -bottom-1 sm:-bottom-2 left-0 w-full"
               viewBox="0 0 200 12"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -341,6 +293,19 @@ export function Hero() {
           >
             Let&apos;s Talk
           </motion.button>
+
+          <motion.a
+            href="/resume"
+            whileHover={{
+              scale: 1.03,
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+            }}
+            whileTap={{ scale: 0.97 }}
+            className="hidden sm:inline-flex items-center gap-2 px-6 py-3 sm:py-4 rounded-full font-semibold text-white/70 text-sm sm:text-base border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:text-white"
+          >
+            <Download className="w-4 h-4" />
+            Resume
+          </motion.a>
         </motion.div>
 
         {/* Tech stack with staggered animation */}
@@ -368,36 +333,19 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Floating AI Chat hint */}
+      {/* Floating AI Chat hint - simplified */}
       <motion.div
-        variants={floatVariants}
-        initial="initial"
-        animate="animate"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.5, duration: 0.5 }}
         className="fixed bottom-24 right-6 z-50 hidden md:block"
       >
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 2, duration: 0.6 }}
-          whileHover={{ scale: 1.02 }}
-          className="flex items-center gap-3 px-4 py-3 rounded-2xl glass border border-white/10 cursor-pointer group hover:border-red-500/30 transition-all duration-300"
-        >
+        <div className="flex items-center gap-3 px-4 py-3 rounded-2xl glass border border-white/10 cursor-pointer group hover:border-red-500/30 transition-all duration-300">
           <div className="relative">
-            <motion.div
-              className="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center"
-              animate={{
-                boxShadow: [
-                  '0 0 0 0 rgba(220, 38, 38, 0)',
-                  '0 0 20px 5px rgba(220, 38, 38, 0.3)',
-                  '0 0 0 0 rgba(220, 38, 38, 0)',
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.3)]">
               <MessageCircle className="w-5 h-5 text-white" />
-            </motion.div>
+            </div>
             <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
             </span>
           </div>
@@ -407,14 +355,10 @@ export function Hero() {
             </p>
             <p className="text-xs text-white/50">AI-powered assistant</p>
           </div>
-          <motion.span
-            animate={{ x: [0, 4, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="text-white/50 group-hover:text-red-400 transition-colors"
-          >
+          <span className="text-white/50 group-hover:text-red-400 transition-colors">
             →
-          </motion.span>
-        </motion.div>
+          </span>
+        </div>
       </motion.div>
     </section>
   )

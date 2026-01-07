@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Twitter, Heart } from 'lucide-react'
+import { Github, Linkedin, Twitter } from 'lucide-react'
 
 const socialLinks = [
   {
@@ -117,15 +117,9 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="pt-8 border-t border-white/10 flex items-center justify-center">
           <p className="text-sm text-white/40">
             © {currentYear} Highbee. All rights reserved.
-          </p>
-
-          <p className="text-sm text-white/40 flex items-center gap-1">
-            Built with <Heart className="w-4 h-4 text-red-500" /> using{' '}
-            <span className="text-white/60">Next.js</span> &{' '}
-            <span className="text-slate-300">Claude AI</span>
           </p>
         </div>
       </div>
