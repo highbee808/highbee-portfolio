@@ -38,6 +38,10 @@ export const metadata: Metadata = {
     "Nigeria",
   ],
   authors: [{ name: "Ibrahim Lawal" }],
+  icons: {
+    icon: "/images/profile-favicon.png",
+    apple: "/images/profile-favicon.png",
+  },
   openGraph: {
     title: "Highbee | Full-Stack Developer & AI Specialist",
     description: "Building the future with AI-powered applications",
