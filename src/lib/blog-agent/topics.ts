@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv'
+import { Redis } from '@upstash/redis'
 import { Category } from './prompts'
 
 export interface PredefinedTopic {
@@ -15,6 +15,12 @@ interface TopicsData {
   topics: PredefinedTopic[]
   lastUpdated: string
 }
+
+// Initialize Redis client
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || '',
+  token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || '',
+})
 
 const TOPICS_KEY = 'blog:topics'
 
@@ -78,26 +84,26 @@ const DEFAULT_TOPICS: PredefinedTopic[] = [
 
 async function readTopics(): Promise<TopicsData> {
   try {
-    const data = await kv.get<TopicsData>(TOPICS_KEY)
+    const data = await redis.get<TopicsData>(TOPICS_KEY)
     if (!data || !data.topics || data.topics.length === 0) {
       // Seed with default topics if empty
       const initialData: TopicsData = {
         topics: DEFAULT_TOPICS,
         lastUpdated: new Date().toISOString(),
       }
-      await kv.set(TOPICS_KEY, initialData)
+      await redis.set(TOPICS_KEY, initialData)
       return initialData
     }
     return data
   } catch (error) {
-    console.error('Error reading topics from KV:', error)
+    console.error('Error reading topics from Redis:', error)
     return { topics: DEFAULT_TOPICS, lastUpdated: new Date().toISOString() }
   }
 }
 
 async function writeTopics(data: TopicsData): Promise<void> {
   data.lastUpdated = new Date().toISOString()
-  await kv.set(TOPICS_KEY, data)
+  await redis.set(TOPICS_KEY, data)
 }
 
 export async function getPredefinedTopics(): Promise<PredefinedTopic[]> {

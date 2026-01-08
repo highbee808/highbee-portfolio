@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { kv } from '@vercel/kv'
+import { Redis } from '@upstash/redis'
 import { isAuthenticated } from '@/lib/auth'
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || '',
+  token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || '',
+})
 
 // Existing blog posts to migrate
 const EXISTING_POSTS = [
@@ -79,7 +84,7 @@ export async function POST(req: NextRequest) {
 
   try {
     // Check if data already exists
-    const existingPosts = await kv.get('blog:posts')
+    const existingPosts = await redis.get('blog:posts')
 
     if (existingPosts && Array.isArray(existingPosts) && existingPosts.length > 0) {
       return NextResponse.json({
@@ -90,7 +95,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Migrate blog posts
-    await kv.set('blog:posts', EXISTING_POSTS)
+    await redis.set('blog:posts', EXISTING_POSTS)
 
     // Migrate topics with defaults
     const defaultTopics = {
@@ -153,7 +158,7 @@ export async function POST(req: NextRequest) {
       lastUpdated: new Date().toISOString(),
     }
 
-    await kv.set('blog:topics', defaultTopics)
+    await redis.set('blog:topics', defaultTopics)
 
     return NextResponse.json({
       success: true,
@@ -181,8 +186,8 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const posts = await kv.get('blog:posts')
-    const topics = await kv.get('blog:topics')
+    const posts = await redis.get('blog:posts')
+    const topics = await redis.get('blog:topics')
 
     return NextResponse.json({
       status: 'ok',

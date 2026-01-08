@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv'
+import { Redis } from '@upstash/redis'
 
 export interface BlogPost {
   id: string
@@ -17,20 +17,26 @@ export interface BlogPost {
   updatedAt: string
 }
 
+// Initialize Redis client
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || '',
+  token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || '',
+})
+
 const POSTS_KEY = 'blog:posts'
 
 async function readPosts(): Promise<BlogPost[]> {
   try {
-    const posts = await kv.get<BlogPost[]>(POSTS_KEY)
+    const posts = await redis.get<BlogPost[]>(POSTS_KEY)
     return posts || []
   } catch (error) {
-    console.error('Error reading posts from KV:', error)
+    console.error('Error reading posts from Redis:', error)
     return []
   }
 }
 
 async function writePosts(posts: BlogPost[]): Promise<void> {
-  await kv.set(POSTS_KEY, posts)
+  await redis.set(POSTS_KEY, posts)
 }
 
 export async function getAllPosts(): Promise<BlogPost[]> {
