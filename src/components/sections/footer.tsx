@@ -2,24 +2,25 @@
 
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Twitter } from 'lucide-react'
+import Image from 'next/image'
 
 const socialLinks = [
   {
     name: 'GitHub',
     icon: Github,
-    href: 'https://github.com/highbee',
+    href: 'https://github.com/highbee808',
     color: 'hover:text-white',
   },
   {
     name: 'LinkedIn',
     icon: Linkedin,
-    href: 'https://linkedin.com/in/highbee',
+    href: 'https://www.linkedin.com/in/highbee',
     color: 'hover:text-blue-400',
   },
   {
     name: 'Twitter',
     icon: Twitter,
-    href: 'https://twitter.com/highbee',
+    href: 'https://x.com/Highbee_Realest',
     color: 'hover:text-sky-400',
   },
 ]
@@ -43,13 +44,22 @@ export function Footer() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-400/50 to-transparent" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
+        <div className="flex flex-col gap-10 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-white">
-              High<span className="text-gradient">bee</span>
-            </h3>
-            <p className="text-white/50 text-sm leading-relaxed">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/images/profile-favicon.png"
+                alt="Highbee"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+              <h3 className="text-2xl font-bold text-white">
+                High<span className="text-gradient">bee</span>
+              </h3>
+            </div>
+            <p className="text-white/50 text-sm leading-relaxed max-w-sm">
               Full-Stack Developer & AI Integration Specialist. Building the future,
               one line of code at a time.
             </p>
@@ -72,47 +82,50 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Navigation */}
-          <div>
-            <h4 className="text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
-              Navigation
-            </h4>
-            <ul className="space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.name}>
+          {/* Navigation & Contact - side by side on mobile, separate columns on desktop */}
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-8 md:max-w-md">
+            {/* Navigation */}
+            <div>
+              <h4 className="text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
+                Navigation
+              </h4>
+              <ul className="space-y-3">
+                {navLinks.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="text-white/50 hover:text-white transition-colors text-sm"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
+                Get In Touch
+              </h4>
+              <ul className="space-y-3 text-sm">
+                <li>
                   <a
-                    href={link.href}
-                    className="text-white/50 hover:text-white transition-colors text-sm"
+                    href="mailto:hello@highbee.dev"
+                    className="text-white/50 hover:text-slate-300 transition-colors"
                   >
-                    {link.name}
+                    hello@highbee.dev
                   </a>
                 </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
-              Get In Touch
-            </h4>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a
-                  href="mailto:hello@highbee.dev"
-                  className="text-white/50 hover:text-slate-300 transition-colors"
-                >
-                  hello@highbee.dev
-                </a>
-              </li>
-              <li className="text-white/50">Lagos, Nigeria</li>
-              <li>
-                <span className="inline-flex items-center gap-2 text-emerald-400 text-xs">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  Available for projects
-                </span>
-              </li>
-            </ul>
+                <li className="text-white/50">Lagos, Nigeria</li>
+                <li>
+                  <span className="inline-flex items-center gap-2 text-emerald-400 text-xs">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    Available for projects
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
