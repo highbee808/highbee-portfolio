@@ -7,6 +7,9 @@ import { Blog } from '@/components/sections/blog'
 import { Contact } from '@/components/sections/contact'
 import { Footer } from '@/components/sections/footer'
 
+// Revalidate every 60 seconds to fetch fresh blog data
+export const revalidate = 60
+
 export default function Home() {
   return (
     <main>
