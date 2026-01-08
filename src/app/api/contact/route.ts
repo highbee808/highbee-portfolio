@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     // Send email via Resend
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: 'Portfolio Contact <onboarding@resend.dev>', // Use your verified domain in production
+      from: 'Highbee Agency <onboarding@resend.dev>',
       to: process.env.CONTACT_EMAIL || 'hello@highbee.dev',
       replyTo: email,
       subject: `New Portfolio Inquiry: ${projectType} from ${name}`,

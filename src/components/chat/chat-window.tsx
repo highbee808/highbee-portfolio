@@ -65,31 +65,55 @@ function parseLeadData(content: string): { name: string; email: string; projectT
 
   if (!nameMatch || !emailMatch || !projectTypeMatch || !descriptionMatch) return null
 
-  return {
-    name: nameMatch[1].trim(),
-    email: emailMatch[1].trim(),
-    projectType: projectTypeMatch[1].trim(),
-    description: descriptionMatch[1].trim(),
+  const name = nameMatch[1].trim()
+  const email = emailMatch[1].trim()
+  const projectType = projectTypeMatch[1].trim()
+  const description = descriptionMatch[1].trim()
+
+  // Validate: reject if contains placeholder text or invalid email
+  const hasPlaceholder = [name, email, projectType, description].some(
+    val => val.includes('{') || val.includes('}') || val.toLowerCase().includes('their ')
+  )
+  const hasValidEmail = email.includes('@') && email.includes('.')
+
+  if (hasPlaceholder || !hasValidEmail) {
+    console.warn('[Chat] Invalid lead data - contains placeholders or invalid email:', { name, email })
+    return null
   }
+
+  return { name, email, projectType, description }
 }
 
-// Strip lead marker from message for display
+// Strip lead marker from message for display (including malformed/incomplete markers)
 function stripLeadMarker(content: string): string {
-  return content.replace(/\[LEAD_CAPTURED\][\s\S]*?\[\/LEAD_CAPTURED\]/g, '').trim()
+  return content
+    .replace(/\[LEAD_CAPTURED\][\s\S]*?\[\/LEAD_CAPTURED\]/g, '') // Complete markers
+    .replace(/\[LEAD_CAPTURED\][\s\S]*/g, '')                      // Incomplete opening marker
+    .replace(/\[\/LEAD_CAPTURED\]/g, '')                           // Orphan closing tag
+    .replace(/\[\/LEAD[^\]]*\]/g, '')                              // Malformed closing like [/LEAD]
+    .replace(/\[LEAD[^\]]*\]/g, '')                                // Malformed opening like [LEAD]
+    .trim()
 }
 
 // Send lead email via contact API
 async function sendLeadEmail(lead: { name: string; email: string; projectType: string; description: string }) {
   try {
-    await fetch('/api/contact', {
+    const response = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: lead.name,
         email: lead.email,
-        message: `[Chat Lead - ${lead.projectType}]\n\nProject Type: ${lead.projectType}\n\nDescription: ${lead.description}\n\n---\nThis lead was captured via the AI chat widget.`,
+        projectType: lead.projectType,
+        budget: 'Chat Lead',
+        message: `[Chat Lead]\n\nDescription: ${lead.description}\n\n---\nCaptured via AI chat widget.`,
       }),
     })
+
+    if (!response.ok) {
+      console.error('[Chat] Lead email failed:', response.status)
+      return
+    }
     console.log('[Chat] Lead email sent successfully')
   } catch (error) {
     console.error('[Chat] Failed to send lead email:', error)

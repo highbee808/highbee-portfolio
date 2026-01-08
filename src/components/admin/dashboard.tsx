@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import {
   LayoutDashboard,
   FileText,
@@ -14,6 +15,8 @@ import {
   Clock,
   CheckCircle,
   FileEdit,
+  Sparkles,
+  RefreshCw,
 } from 'lucide-react'
 import type { BlogPost } from '@/lib/blog-store'
 
@@ -30,14 +33,36 @@ const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
   { icon: FileText, label: 'Blog Posts', href: '/admin/blog' },
   { icon: PlusCircle, label: 'New Post', href: '/admin/blog/new' },
+  { icon: Sparkles, label: 'AI Generate', href: '/admin/blog/generate' },
 ]
 
 export function AdminDashboard({ stats, recentPosts }: DashboardProps) {
   const router = useRouter()
+  const [syncing, setSyncing] = useState(false)
+  const [syncMessage, setSyncMessage] = useState('')
 
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' })
     router.push('/admin')
+  }
+
+  const handleSync = async () => {
+    setSyncing(true)
+    setSyncMessage('')
+    try {
+      const res = await fetch('/api/admin/migrate', { method: 'POST' })
+      const data = await res.json()
+      if (res.ok) {
+        setSyncMessage(`Synced ${data.postsCount} posts to database`)
+        router.refresh()
+      } else {
+        setSyncMessage(`Error: ${data.error}`)
+      }
+    } catch {
+      setSyncMessage('Sync failed')
+    } finally {
+      setSyncing(false)
+    }
   }
 
   return (
@@ -137,7 +162,7 @@ export function AdminDashboard({ stats, recentPosts }: DashboardProps) {
             </div>
 
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
               <Link href="/admin/blog/new">
                 <motion.div
                   whileHover={{ y: -2 }}
@@ -150,6 +175,23 @@ export function AdminDashboard({ stats, recentPosts }: DashboardProps) {
                     <div>
                       <h3 className="font-semibold text-white">Create New Post</h3>
                       <p className="text-sm text-white/50">Write a new blog article</p>
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
+
+              <Link href="/admin/blog/generate">
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="glass rounded-2xl p-6 cursor-pointer hover:border-purple-500/30 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-red-600 flex items-center justify-center">
+                      <Sparkles className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white">AI Generate</h3>
+                      <p className="text-sm text-white/50">Create posts with AI</p>
                     </div>
                   </div>
                 </motion.div>
@@ -171,6 +213,22 @@ export function AdminDashboard({ stats, recentPosts }: DashboardProps) {
                   </div>
                 </motion.div>
               </Link>
+
+              <motion.div
+                whileHover={{ y: -2 }}
+                onClick={handleSync}
+                className="glass rounded-2xl p-6 cursor-pointer hover:border-emerald-500/30 transition-colors"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
+                    <RefreshCw className={`w-6 h-6 text-white ${syncing ? 'animate-spin' : ''}`} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">{syncing ? 'Syncing...' : 'Sync Data'}</h3>
+                    <p className="text-sm text-white/50">{syncMessage || 'Sync posts to database'}</p>
+                  </div>
+                </div>
+              </motion.div>
             </div>
 
             {/* Recent Posts */}
