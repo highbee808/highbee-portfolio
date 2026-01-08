@@ -1,0 +1,256 @@
+{
+  "topics": [
+    {
+      "id": "ai-agents-actually-work",
+      "title": "Building AI Agents That Actually Work in Production",
+      "category": "ai",
+      "suggestedTone": "technical",
+      "keywords": [
+        "AI agents",
+        "LLM",
+        "production",
+        "Claude"
+      ],
+      "used": true,
+      "usedAt": "2026-01-08T11:33:21.947Z"
+    },
+    {
+      "id": "claude-vs-chatgpt-honest",
+      "title": "Claude vs ChatGPT: An Honest Developer's Comparison",
+      "category": "ai",
+      "suggestedTone": "conversational",
+      "keywords": [
+        "Claude",
+        "ChatGPT",
+        "AI comparison",
+        "developer tools"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "prompt-engineering-myths",
+      "title": "Prompt Engineering Myths That Waste Your Time",
+      "category": "ai",
+      "suggestedTone": "conversational",
+      "keywords": [
+        "prompt engineering",
+        "LLM",
+        "best practices"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "ai-chat-widget-nextjs",
+      "title": "How I Built an AI Chat Widget for My Portfolio",
+      "category": "ai",
+      "suggestedTone": "educational",
+      "keywords": [
+        "AI chat",
+        "Next.js",
+        "Claude API",
+        "tutorial"
+      ],
+      "used": true,
+      "usedAt": "2026-01-08T02:35:57.893Z"
+    },
+    {
+      "id": "typescript-tips-changed-code",
+      "title": "TypeScript Tips That Changed How I Write Code",
+      "category": "typescript",
+      "suggestedTone": "conversational",
+      "keywords": [
+        "TypeScript",
+        "tips",
+        "best practices",
+        "type safety"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "nextjs-15-matters",
+      "title": "What's New in Next.js 15 That Actually Matters",
+      "category": "typescript",
+      "suggestedTone": "professional",
+      "keywords": [
+        "Next.js",
+        "React",
+        "web development",
+        "updates"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "rest-to-trpc",
+      "title": "Why I Switched from REST to tRPC (And You Should Too)",
+      "category": "typescript",
+      "suggestedTone": "conversational",
+      "keywords": [
+        "tRPC",
+        "REST",
+        "TypeScript",
+        "API design"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "supabase-real-time",
+      "title": "Building Real-Time Features with Supabase",
+      "category": "typescript",
+      "suggestedTone": "educational",
+      "keywords": [
+        "Supabase",
+        "real-time",
+        "PostgreSQL",
+        "websockets"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "react-server-components-when",
+      "title": "React Server Components: When to Actually Use Them",
+      "category": "typescript",
+      "suggestedTone": "technical",
+      "keywords": [
+        "React",
+        "Server Components",
+        "RSC",
+        "Next.js"
+      ],
+      "used": true,
+      "usedAt": "2026-01-08T12:56:35.693Z"
+    },
+    {
+      "id": "bento-grid-layouts",
+      "title": "Designing Bento Grid Layouts That Convert",
+      "category": "design",
+      "suggestedTone": "professional",
+      "keywords": [
+        "Bento grid",
+        "UI design",
+        "landing pages",
+        "conversion"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "dark-mode-right-way",
+      "title": "Implementing Dark Mode the Right Way",
+      "category": "design",
+      "suggestedTone": "educational",
+      "keywords": [
+        "dark mode",
+        "CSS",
+        "theming",
+        "accessibility"
+      ],
+      "used": true,
+      "usedAt": "2026-01-08T02:55:43.837Z"
+    },
+    {
+      "id": "framer-motion-animations",
+      "title": "Framer Motion Animations That Don't Feel Cheesy",
+      "category": "design",
+      "suggestedTone": "conversational",
+      "keywords": [
+        "Framer Motion",
+        "animations",
+        "React",
+        "UX"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "ship-fast-iterate",
+      "title": "Ship Fast, Iterate Faster: My Development Philosophy",
+      "category": "general",
+      "suggestedTone": "conversational",
+      "keywords": [
+        "productivity",
+        "shipping",
+        "MVP",
+        "iteration"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "freelance-nigeria-global",
+      "title": "Freelancing from Nigeria: Building a Global Client Base",
+      "category": "general",
+      "suggestedTone": "professional",
+      "keywords": [
+        "freelancing",
+        "remote work",
+        "Nigeria",
+        "global clients"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "side-projects-portfolio",
+      "title": "Side Projects That Actually Help Your Career",
+      "category": "general",
+      "suggestedTone": "conversational",
+      "keywords": [
+        "side projects",
+        "portfolio",
+        "career",
+        "learning"
+      ],
+      "used": true,
+      "usedAt": "2026-01-08T11:20:14.100Z"
+    },
+    {
+      "id": "api-error-handling",
+      "title": "API Error Handling Patterns That Scale",
+      "category": "typescript",
+      "suggestedTone": "technical",
+      "keywords": [
+        "API",
+        "error handling",
+        "Node.js",
+        "best practices"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "zod-validation",
+      "title": "Type-Safe Validation with Zod: A Practical Guide",
+      "category": "typescript",
+      "suggestedTone": "educational",
+      "keywords": [
+        "Zod",
+        "validation",
+        "TypeScript",
+        "schemas"
+      ],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "tailwind-custom-design",
+      "title": "Making Tailwind Look Custom (Not Like Every Other Site)",
+      "category": "design",
+      "suggestedTone": "conversational",
+      "keywords": [
+        "Tailwind CSS",
+        "design",
+        "customization",
+        "branding"
+      ],
+      "used": false,
+      "usedAt": null
+    }
+  ],
+  "lastUpdated": "2026-01-08T12:56:35.693Z"
+}

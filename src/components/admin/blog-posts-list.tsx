@@ -15,7 +15,8 @@ import {
   Trash2,
   Clock,
   Search,
-  Filter,
+  Sparkles,
+  Star,
 } from 'lucide-react'
 import type { BlogPost } from '@/lib/blog-store'
 
@@ -27,6 +28,7 @@ const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
   { icon: FileText, label: 'Blog Posts', href: '/admin/blog', active: true },
   { icon: PlusCircle, label: 'New Post', href: '/admin/blog/new' },
+  { icon: Sparkles, label: 'AI Generate', href: '/admin/blog/generate' },
 ]
 
 const categoryColors: Record<string, string> = {
@@ -41,6 +43,7 @@ export function BlogPostsList({ posts }: BlogPostsListProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft'>('all')
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [togglingFeatured, setTogglingFeatured] = useState<string | null>(null)
 
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' })
@@ -58,6 +61,22 @@ export function BlogPostsList({ posts }: BlogPostsListProps) {
       }
     } finally {
       setDeleting(null)
+    }
+  }
+
+  const handleToggleFeatured = async (post: BlogPost) => {
+    setTogglingFeatured(post.id)
+    try {
+      const res = await fetch(`/api/admin/blog/${post.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ featuredOnHomepage: !post.featuredOnHomepage }),
+      })
+      if (res.ok) {
+        router.refresh()
+      }
+    } finally {
+      setTogglingFeatured(null)
     }
   }
 
@@ -207,6 +226,12 @@ export function BlogPostsList({ posts }: BlogPostsListProps) {
                           }`}>
                             {post.published ? 'Published' : 'Draft'}
                           </span>
+                          {post.featuredOnHomepage && (
+                            <span className="px-2 py-0.5 rounded-full text-xs bg-amber-500/20 text-amber-400 flex items-center gap-1">
+                              <Star className="w-3 h-3 fill-current" />
+                              Featured
+                            </span>
+                          )}
                         </div>
                         <p className="text-sm text-white/40 line-clamp-1">{post.excerpt}</p>
                         <div className="flex items-center gap-4 mt-2 text-xs text-white/30">
@@ -218,11 +243,23 @@ export function BlogPostsList({ posts }: BlogPostsListProps) {
                         </div>
                       </div>
                       <div className="flex items-center gap-2 ml-4">
+                        <button
+                          onClick={() => handleToggleFeatured(post)}
+                          disabled={togglingFeatured === post.id}
+                          className={`p-2 rounded-lg transition-colors disabled:opacity-50 ${
+                            post.featuredOnHomepage
+                              ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30'
+                              : 'hover:bg-white/10 text-white/40 hover:text-amber-400'
+                          }`}
+                          title={post.featuredOnHomepage ? 'Remove from homepage' : 'Feature on homepage'}
+                        >
+                          <Star className={`w-4 h-4 ${post.featuredOnHomepage ? 'fill-current' : ''}`} />
+                        </button>
                         <Link
-                          href={`/blog/${post.slug}`}
+                          href={`/blog/${post.slug}?preview=true`}
                           target="_blank"
                           className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-colors"
-                          title="View"
+                          title="Preview"
                         >
                           <Eye className="w-4 h-4" />
                         </Link>

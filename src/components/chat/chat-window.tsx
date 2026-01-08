@@ -11,41 +11,86 @@ interface Message {
   content: string
 }
 
+interface StoredChat {
+  messages: Message[]
+  timestamp: number
+}
+
+const CHAT_STORAGE_KEY = 'highbee_chat_history'
+const CHAT_EXPIRY_DAYS = 7
+
 interface ChatWindowProps {
   onClose: () => void
 }
 
-const WELCOME_MESSAGE = "Hi! I'm Highbee's AI assistant. Ask me about their services, projects, or availability. How can I help you today?"
+const WELCOME_MESSAGE = "Hi! I'm the AI assistant for Highbee Agency. We build web apps, mobile apps, AI solutions, and brands. How can I help you today?"
 
 const QUICK_QUESTIONS = [
   "What services do you offer?",
-  "Tell me about TaskRite",
-  "What's your availability?",
+  "I need a mobile app",
+  "I want to start a project",
 ]
 
+function loadStoredMessages(): Message[] {
+  if (typeof window === 'undefined') return [{ role: 'assistant', content: WELCOME_MESSAGE }]
+
+  try {
+    const stored = localStorage.getItem(CHAT_STORAGE_KEY)
+    if (!stored) return [{ role: 'assistant', content: WELCOME_MESSAGE }]
+
+    const parsed: StoredChat = JSON.parse(stored)
+    const daysSinceChat = (Date.now() - parsed.timestamp) / (1000 * 60 * 60 * 24)
+
+    if (daysSinceChat > CHAT_EXPIRY_DAYS) {
+      localStorage.removeItem(CHAT_STORAGE_KEY)
+      return [{ role: 'assistant', content: WELCOME_MESSAGE }]
+    }
+
+    return parsed.messages.length > 0 ? parsed.messages : [{ role: 'assistant', content: WELCOME_MESSAGE }]
+  } catch {
+    return [{ role: 'assistant', content: WELCOME_MESSAGE }]
+  }
+}
+
 export function ChatWindow({ onClose }: ChatWindowProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: WELCOME_MESSAGE },
-  ])
+  const [messages, setMessages] = useState<Message[]>(() => loadStoredMessages())
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // Auto-scroll to bottom
+  // Save messages to localStorage when they change
+  useEffect(() => {
+    if (messages.length <= 1) return // Don't save if only welcome message
+
+    const chatData: StoredChat = {
+      messages,
+      timestamp: Date.now()
+    }
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatData))
+  }, [messages])
+
+  const clearChat = () => {
+    localStorage.removeItem(CHAT_STORAGE_KEY)
+    setMessages([{ role: 'assistant', content: WELCOME_MESSAGE }])
+  }
+
+  // Scroll to top on mount to show welcome message and quick options
   useEffect(() => {
     if (scrollRef.current) {
+      scrollRef.current.scrollTo({ top: 0 })
+    }
+  }, [])
+
+  // Auto-scroll to bottom when new messages are added (after initial load)
+  useEffect(() => {
+    if (scrollRef.current && messages.length > 1) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
         behavior: 'smooth',
       })
     }
   }, [messages])
-
-  // Focus input on mount
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
 
   const handleSend = async (text?: string) => {
     const messageText = text || input.trim()
@@ -112,7 +157,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ type: 'tween', duration: 0.2 }}
-        className="fixed z-50 inset-x-3 bottom-3 top-auto h-[85vh] md:inset-auto md:bottom-24 md:right-6 md:w-[380px] md:h-[550px] rounded-2xl overflow-hidden flex flex-col bg-[#0d0d14] border border-white/10 shadow-2xl shadow-black/50"
+        className="fixed z-50 inset-x-3 bottom-3 top-20 md:top-auto md:inset-auto md:bottom-24 md:right-6 md:w-[380px] md:h-[550px] rounded-2xl overflow-hidden flex flex-col bg-[#0d0d14] border border-white/10 shadow-2xl shadow-black/50 max-h-[80dvh] md:max-h-none"
       >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-white/10 bg-gradient-to-r from-red-600/10 to-red-700/10">
@@ -130,16 +175,27 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
             <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0d0d14]" />
           </div>
           <div>
-            <p className="font-semibold text-white text-sm">Highbee&apos;s Assistant</p>
-            <p className="text-xs text-white/50">Powered by Claude AI</p>
+            <p className="font-semibold text-white text-sm">Highbee Agency</p>
+            <p className="text-xs text-white/50">AI Assistant</p>
           </div>
         </div>
-        <button
-          onClick={onClose}
-          className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          {messages.length > 1 && (
+            <button
+              onClick={clearChat}
+              className="text-xs text-white/40 hover:text-white/60 transition-colors px-2 py-1"
+              title="Start new conversation"
+            >
+              New chat
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Messages */}
