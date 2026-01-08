@@ -38,9 +38,15 @@ export const metadata: Metadata = {
     "Nigeria",
   ],
   authors: [{ name: "Ibrahim Lawal" }],
+  manifest: "/manifest.json",
   icons: {
     icon: "/images/profile-favicon.png",
     apple: "/images/profile-favicon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Highbee",
   },
   openGraph: {
     title: "Highbee | Full-Stack Developer & AI Specialist",
@@ -64,6 +70,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
   themeColor: "#0a0a0f",
 };
 

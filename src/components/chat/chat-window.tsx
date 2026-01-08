@@ -257,7 +257,8 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
             onKeyDown={handleKeyDown}
             placeholder="Ask me anything..."
             disabled={isLoading}
-            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-red-500/50 disabled:opacity-50 transition-colors"
+            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-base md:text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-red-500/50 disabled:opacity-50 transition-colors"
+            style={{ touchAction: 'manipulation' }}
           />
           <motion.button
             whileHover={{ scale: 1.05 }}
