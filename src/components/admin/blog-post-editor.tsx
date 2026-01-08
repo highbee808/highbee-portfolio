@@ -19,6 +19,9 @@ import {
   Quote,
   Heading2,
   Link as LinkIcon,
+  Wand2,
+  Loader2,
+  CheckCircle,
 } from 'lucide-react'
 import type { BlogPost } from '@/lib/blog-store'
 
@@ -44,8 +47,11 @@ export function BlogPostEditor({ post }: BlogPostEditorProps) {
   const [content, setContent] = useState(post?.content || '')
   const [coverImage, setCoverImage] = useState(post?.coverImage || '')
   const [published, setPublished] = useState(post?.published || false)
+  const [featuredOnHomepage, setFeaturedOnHomepage] = useState(post?.featuredOnHomepage || false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [isFixingFormat, setIsFixingFormat] = useState(false)
+  const [formatMessage, setFormatMessage] = useState('')
 
   const generateSlug = (text: string) => {
     return text
@@ -87,6 +93,43 @@ export function BlogPostEditor({ post }: BlogPostEditorProps) {
     }, 0)
   }
 
+  const handleFixFormatting = async () => {
+    if (!content.trim() || isFixingFormat) return
+
+    setIsFixingFormat(true)
+    setFormatMessage('')
+    setError('')
+
+    try {
+      const res = await fetch('/api/admin/blog/format', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      })
+
+      if (!res.ok) {
+        throw new Error('Failed to check formatting')
+      }
+
+      const data = await res.json()
+
+      if (data.wasModified) {
+        setContent(data.fixedContent)
+        const issueCount = data.issuesFound.length
+        setFormatMessage(`Fixed ${issueCount} issue${issueCount > 1 ? 's' : ''}: ${data.issuesFound.slice(0, 3).join(', ')}${issueCount > 3 ? '...' : ''}`)
+      } else {
+        setFormatMessage('No formatting issues found!')
+      }
+
+      // Clear message after 5 seconds
+      setTimeout(() => setFormatMessage(''), 5000)
+    } catch (err) {
+      setError('Failed to check formatting')
+    } finally {
+      setIsFixingFormat(false)
+    }
+  }
+
   const handleSave = async (asDraft = false) => {
     if (!title.trim()) {
       setError('Title is required')
@@ -108,6 +151,7 @@ export function BlogPostEditor({ post }: BlogPostEditorProps) {
         content,
         coverImage: coverImage || undefined,
         published: asDraft ? false : published,
+        featuredOnHomepage,
         date: post?.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         readTime: estimateReadTime(content),
       }
@@ -170,7 +214,7 @@ export function BlogPostEditor({ post }: BlogPostEditorProps) {
           <div className="flex items-center gap-3">
             {slug && (
               <Link
-                href={`/blog/${slug}`}
+                href={`/blog/${slug}?preview=true`}
                 target="_blank"
                 className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors text-sm"
               >
@@ -300,6 +344,25 @@ export function BlogPostEditor({ post }: BlogPostEditorProps) {
                   >
                     {'</>'}
                   </button>
+                  <div className="w-px h-5 bg-white/10 mx-1" />
+                  <button
+                    onClick={handleFixFormatting}
+                    disabled={isFixingFormat || !content.trim()}
+                    className="p-2 rounded-lg hover:bg-purple-500/20 text-white/60 hover:text-purple-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Fix Formatting (AI)"
+                  >
+                    {isFixingFormat ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Wand2 className="w-4 h-4" />
+                    )}
+                  </button>
+                  {formatMessage && (
+                    <div className="flex items-center gap-1.5 ml-2 px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-xs">
+                      <CheckCircle className="w-3 h-3" />
+                      <span className="max-w-[200px] truncate">{formatMessage}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Editor */}
@@ -388,7 +451,7 @@ Use Markdown for formatting:
               </div>
 
               {/* Status */}
-              <div className="glass rounded-2xl p-4">
+              <div className="glass rounded-2xl p-4 space-y-4">
                 <label className="flex items-center justify-between cursor-pointer">
                   <span className="text-sm font-medium text-white/60">Published</span>
                   <div
@@ -404,6 +467,27 @@ Use Markdown for formatting:
                     />
                   </div>
                 </label>
+
+                <div className="border-t border-white/10 pt-4">
+                  <label className="flex items-center justify-between cursor-pointer">
+                    <div>
+                      <span className="text-sm font-medium text-white/60 block">Feature on Homepage</span>
+                      <span className="text-xs text-white/30">Show in portfolio blog section</span>
+                    </div>
+                    <div
+                      className={`relative w-12 h-6 rounded-full transition-colors ${
+                        featuredOnHomepage ? 'bg-amber-500' : 'bg-white/20'
+                      }`}
+                      onClick={() => setFeaturedOnHomepage(!featuredOnHomepage)}
+                    >
+                      <div
+                        className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
+                          featuredOnHomepage ? 'translate-x-7' : 'translate-x-1'
+                        }`}
+                      />
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
