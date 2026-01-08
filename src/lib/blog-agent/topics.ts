@@ -1,5 +1,4 @@
-import fs from 'fs/promises'
-import path from 'path'
+import { kv } from '@vercel/kv'
 import { Category } from './prompts'
 
 export interface PredefinedTopic {
@@ -17,31 +16,88 @@ interface TopicsData {
   lastUpdated: string
 }
 
-const TOPICS_FILE = path.join(process.cwd(), 'data', 'blog-topics.json')
+const TOPICS_KEY = 'blog:topics'
 
-async function ensureDataDir() {
-  const dir = path.dirname(TOPICS_FILE)
-  try {
-    await fs.access(dir)
-  } catch {
-    await fs.mkdir(dir, { recursive: true })
-  }
-}
+// Default topics to seed the database
+const DEFAULT_TOPICS: PredefinedTopic[] = [
+  {
+    id: 'ai-code-review',
+    title: 'How AI is Revolutionizing Code Review',
+    category: 'ai',
+    suggestedTone: 'professional',
+    keywords: ['AI', 'code review', 'automation', 'developer tools'],
+    used: false,
+    usedAt: null,
+  },
+  {
+    id: 'typescript-generics',
+    title: 'Mastering TypeScript Generics: From Basics to Advanced Patterns',
+    category: 'typescript',
+    suggestedTone: 'educational',
+    keywords: ['TypeScript', 'generics', 'type safety', 'programming'],
+    used: false,
+    usedAt: null,
+  },
+  {
+    id: 'design-system-tokens',
+    title: 'Building a Design System with Design Tokens',
+    category: 'design',
+    suggestedTone: 'technical',
+    keywords: ['design systems', 'design tokens', 'UI', 'consistency'],
+    used: false,
+    usedAt: null,
+  },
+  {
+    id: 'prompt-engineering',
+    title: 'Prompt Engineering Best Practices for Developers',
+    category: 'ai',
+    suggestedTone: 'conversational',
+    keywords: ['prompt engineering', 'AI', 'LLM', 'ChatGPT'],
+    used: false,
+    usedAt: null,
+  },
+  {
+    id: 'react-server-components',
+    title: 'Understanding React Server Components',
+    category: 'typescript',
+    suggestedTone: 'educational',
+    keywords: ['React', 'server components', 'Next.js', 'performance'],
+    used: false,
+    usedAt: null,
+  },
+  {
+    id: 'micro-interactions',
+    title: 'The Art of Micro-interactions in Web Design',
+    category: 'design',
+    suggestedTone: 'conversational',
+    keywords: ['micro-interactions', 'UX', 'animation', 'web design'],
+    used: false,
+    usedAt: null,
+  },
+]
 
 async function readTopics(): Promise<TopicsData> {
   try {
-    await ensureDataDir()
-    const data = await fs.readFile(TOPICS_FILE, 'utf-8')
-    return JSON.parse(data)
-  } catch {
-    return { topics: [], lastUpdated: new Date().toISOString() }
+    const data = await kv.get<TopicsData>(TOPICS_KEY)
+    if (!data || !data.topics || data.topics.length === 0) {
+      // Seed with default topics if empty
+      const initialData: TopicsData = {
+        topics: DEFAULT_TOPICS,
+        lastUpdated: new Date().toISOString(),
+      }
+      await kv.set(TOPICS_KEY, initialData)
+      return initialData
+    }
+    return data
+  } catch (error) {
+    console.error('Error reading topics from KV:', error)
+    return { topics: DEFAULT_TOPICS, lastUpdated: new Date().toISOString() }
   }
 }
 
 async function writeTopics(data: TopicsData): Promise<void> {
-  await ensureDataDir()
   data.lastUpdated = new Date().toISOString()
-  await fs.writeFile(TOPICS_FILE, JSON.stringify(data, null, 2))
+  await kv.set(TOPICS_KEY, data)
 }
 
 export async function getPredefinedTopics(): Promise<PredefinedTopic[]> {

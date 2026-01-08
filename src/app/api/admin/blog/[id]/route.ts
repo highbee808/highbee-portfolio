@@ -45,6 +45,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
       coverImage: data.coverImage,
       content: data.content,
       published: data.published,
+      featuredOnHomepage: data.featuredOnHomepage,
     })
 
     if (!post) {

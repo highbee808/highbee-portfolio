@@ -1,5 +1,4 @@
-import fs from 'fs/promises'
-import path from 'path'
+import { kv } from '@vercel/kv'
 
 export interface BlogPost {
   id: string
@@ -18,30 +17,20 @@ export interface BlogPost {
   updatedAt: string
 }
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'blog-posts.json')
-
-async function ensureDataDir() {
-  const dir = path.dirname(DATA_FILE)
-  try {
-    await fs.access(dir)
-  } catch {
-    await fs.mkdir(dir, { recursive: true })
-  }
-}
+const POSTS_KEY = 'blog:posts'
 
 async function readPosts(): Promise<BlogPost[]> {
   try {
-    await ensureDataDir()
-    const data = await fs.readFile(DATA_FILE, 'utf-8')
-    return JSON.parse(data)
-  } catch {
+    const posts = await kv.get<BlogPost[]>(POSTS_KEY)
+    return posts || []
+  } catch (error) {
+    console.error('Error reading posts from KV:', error)
     return []
   }
 }
 
 async function writePosts(posts: BlogPost[]): Promise<void> {
-  await ensureDataDir()
-  await fs.writeFile(DATA_FILE, JSON.stringify(posts, null, 2))
+  await kv.set(POSTS_KEY, posts)
 }
 
 export async function getAllPosts(): Promise<BlogPost[]> {
