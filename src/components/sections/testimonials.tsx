@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Phone, Star } from 'lucide-react'
+import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const testimonials = [
   {
@@ -89,7 +90,7 @@ export function Testimonials() {
             <h2 className="font-serif text-4xl md:text-5xl text-white leading-tight">
               What Clients
               <br />
-              <span className="text-gradient">Say About Me</span>
+              <ShimmerText className="text-gradient">Say About Me</ShimmerText>
             </h2>
           </motion.div>
 

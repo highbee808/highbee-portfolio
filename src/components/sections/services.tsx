@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Bot, Code, Rocket, ArrowRight, Check, MessageSquare, ShieldCheck } from 'lucide-react'
+import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const services = [
   {
@@ -115,7 +116,7 @@ export function Services() {
             <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
               What I Can Build
               <br />
-              <span className="text-gradient">For You</span>
+              <ShimmerText className="text-gradient">For You</ShimmerText>
             </h2>
             <p className="text-lg text-white/40 max-w-md">
               From AI integrations to full-stack applications, I deliver solutions that work. Clear pricing, no surprises.
@@ -144,7 +145,7 @@ export function Services() {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">AI Integration</h3>
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="text-3xl font-bold text-gradient">$500</span>
+              <ShimmerText className="text-3xl font-bold text-gradient">$500</ShimmerText>
               <span className="text-lg text-white/40">+</span>
             </div>
             <span className="text-xs text-white/40 mb-5">Starting price</span>
@@ -183,7 +184,7 @@ export function Services() {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Full-Stack Development</h3>
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="text-3xl font-bold text-gradient">$1,000</span>
+              <ShimmerText className="text-3xl font-bold text-gradient">$1,000</ShimmerText>
               <span className="text-lg text-white/40">+</span>
             </div>
             <span className="text-xs text-white/40 mb-5">Starting price</span>
@@ -217,7 +218,7 @@ export function Services() {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Rapid Prototyping</h3>
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="text-3xl font-bold text-gradient">$1,500</span>
+              <ShimmerText className="text-3xl font-bold text-gradient">$1,500</ShimmerText>
               <span className="text-lg text-white/40">+</span>
             </div>
             <span className="text-xs text-white/40 mb-5">Starting price</span>

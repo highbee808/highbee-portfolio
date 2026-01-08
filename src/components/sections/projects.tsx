@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ExternalLink, ArrowRight, Database, Bot, Layers, Zap, Home, Globe, FilePlus } from 'lucide-react'
+import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const featuredMetrics = [
   { icon: Database, value: '27', label: 'DB Migrations' },
@@ -89,7 +90,7 @@ export function Projects() {
             <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
               Projects That
               <br />
-              <span className="text-gradient">Showcase My Skills</span>
+              <ShimmerText className="text-gradient">Showcase My Skills</ShimmerText>
             </h2>
           </motion.div>
 
