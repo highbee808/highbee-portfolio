@@ -13,6 +13,7 @@ export interface BlogPost {
   coverImage?: string
   content: string // Markdown content
   published: boolean
+  featuredOnHomepage?: boolean // Show on portfolio homepage
   createdAt: string
   updatedAt: string
 }
@@ -52,6 +53,13 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
   return posts.filter(p => p.published).sort((a, b) =>
     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
+}
+
+export async function getFeaturedPosts(): Promise<BlogPost[]> {
+  const posts = await getPublishedPosts()
+  const featured = posts.filter(p => p.featuredOnHomepage)
+  // Return featured posts, or top 3 published if none are marked as featured
+  return featured.length > 0 ? featured.slice(0, 3) : posts.slice(0, 3)
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
