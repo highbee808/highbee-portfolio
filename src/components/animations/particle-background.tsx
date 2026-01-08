@@ -15,10 +15,10 @@ interface Particle {
 }
 
 const COLORS = [
-  'rgba(220, 38, 38, 0.6)',    // red-600
-  'rgba(161, 161, 170, 0.5)',  // zinc-400
-  'rgba(82, 82, 91, 0.5)',     // zinc-600
-  'rgba(255, 255, 255, 0.4)',  // white
+  'rgba(220, 38, 38, 0.54)',   // red-600
+  'rgba(161, 161, 170, 0.45)', // zinc-400
+  'rgba(82, 82, 91, 0.45)',    // zinc-600
+  'rgba(255, 255, 255, 0.36)', // white
 ]
 
 export function ParticleBackground() {
@@ -39,7 +39,7 @@ export function ParticleBackground() {
         vy: (Math.random() - 0.5) * 0.3,
         radius: Math.random() * 2.5 + 0.8,
         color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        alpha: Math.random() * 0.5 + 0.4,
+        alpha: Math.random() * 0.45 + 0.36,
         pulseSpeed: Math.random() * 0.02 + 0.01,
         pulseOffset: Math.random() * Math.PI * 2,
       })
@@ -112,7 +112,7 @@ export function ParticleBackground() {
           const dist = Math.sqrt(dx * dx + dy * dy)
 
           if (dist < connectionDistance) {
-            const alpha = (1 - dist / connectionDistance) * 0.25
+            const alpha = (1 - dist / connectionDistance) * 0.22
             ctx.beginPath()
             ctx.moveTo(p1.x, p1.y)
             ctx.lineTo(p2.x, p2.y)
@@ -218,7 +218,7 @@ export function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-auto"
-      style={{ opacity: 0.85 }}
+      style={{ opacity: 0.77 }}
     />
   )
 }
