@@ -143,21 +143,12 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
 
   return (
     <>
-      {/* Backdrop for mobile */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-        className="fixed inset-0 bg-black/60 z-50 md:hidden"
-      />
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ type: 'tween', duration: 0.2 }}
-        className="fixed z-50 inset-x-3 bottom-3 top-20 md:top-auto md:inset-auto md:bottom-24 md:right-6 md:w-[380px] md:h-[550px] rounded-2xl overflow-hidden flex flex-col bg-[#0d0d14] border border-white/10 shadow-2xl shadow-black/50 max-h-[80dvh] md:max-h-none"
+        className="fixed z-50 inset-0 md:inset-auto md:bottom-24 md:right-6 md:w-[380px] md:h-[550px] rounded-none md:rounded-2xl overflow-hidden flex flex-col bg-[#0d0d14] border-0 md:border md:border-white/10 shadow-2xl shadow-black/50"
       >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-white/10 bg-gradient-to-r from-red-600/10 to-red-700/10">
