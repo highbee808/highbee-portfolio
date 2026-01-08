@@ -52,12 +52,64 @@ function loadStoredMessages(): Message[] {
   }
 }
 
+// Parse lead data from AI response
+function parseLeadData(content: string): { name: string; email: string; projectType: string; description: string } | null {
+  const match = content.match(/\[LEAD_CAPTURED\]([\s\S]*?)\[\/LEAD_CAPTURED\]/)
+  if (!match) return null
+
+  const data = match[1]
+  const nameMatch = data.match(/name:\s*(.+)/)
+  const emailMatch = data.match(/email:\s*(.+)/)
+  const projectTypeMatch = data.match(/projectType:\s*(.+)/)
+  const descriptionMatch = data.match(/description:\s*(.+)/)
+
+  if (!nameMatch || !emailMatch || !projectTypeMatch || !descriptionMatch) return null
+
+  return {
+    name: nameMatch[1].trim(),
+    email: emailMatch[1].trim(),
+    projectType: projectTypeMatch[1].trim(),
+    description: descriptionMatch[1].trim(),
+  }
+}
+
+// Strip lead marker from message for display
+function stripLeadMarker(content: string): string {
+  return content.replace(/\[LEAD_CAPTURED\][\s\S]*?\[\/LEAD_CAPTURED\]/g, '').trim()
+}
+
+// Send lead email via contact API
+async function sendLeadEmail(lead: { name: string; email: string; projectType: string; description: string }) {
+  try {
+    await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: lead.name,
+        email: lead.email,
+        message: `[Chat Lead - ${lead.projectType}]\n\nProject Type: ${lead.projectType}\n\nDescription: ${lead.description}\n\n---\nThis lead was captured via the AI chat widget.`,
+      }),
+    })
+    console.log('[Chat] Lead email sent successfully')
+  } catch (error) {
+    console.error('[Chat] Failed to send lead email:', error)
+  }
+}
+
 export function ChatWindow({ onClose }: ChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>(() => loadStoredMessages())
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // Lock body scroll when chat is open (prevents scroll conflict on mobile)
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
 
   // Save messages to localStorage when they change
   useEffect(() => {
@@ -116,9 +168,20 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
       if (!response.ok) throw new Error('Failed to fetch')
 
       const data = await response.json()
+      const assistantMessage = data.message
+
+      // Check for lead capture marker and send email
+      const leadData = parseLeadData(assistantMessage)
+      if (leadData) {
+        sendLeadEmail(leadData)
+      }
+
+      // Strip the lead marker from the displayed message
+      const displayMessage = stripLeadMarker(assistantMessage)
+
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: data.message },
+        { role: 'assistant', content: displayMessage },
       ])
     } catch (error) {
       console.error('Chat error:', error)
@@ -192,7 +255,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
       {/* Messages */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 chat-scrollbar"
+        className="flex-1 overflow-y-auto p-4 space-y-4 chat-scrollbar overscroll-contain"
       >
         {messages.map((msg, i) => (
           <ChatMessage key={i} message={msg} />
