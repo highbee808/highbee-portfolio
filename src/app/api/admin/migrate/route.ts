@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     // Read existing topics from JSON file
     const topicsPath = path.join(process.cwd(), 'data', 'blog-topics.json')
-    let topicsData = { topics: [], lastUpdated: new Date().toISOString() }
+    let topicsData: { topics: unknown[]; lastUpdated: string } = { topics: [], lastUpdated: new Date().toISOString() }
 
     try {
       const topicsFile = await fs.readFile(topicsPath, 'utf-8')
