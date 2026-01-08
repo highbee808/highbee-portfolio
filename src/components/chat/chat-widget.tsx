@@ -1,12 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageSquare, X } from 'lucide-react'
 import { ChatWindow } from './chat-window'
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Hide chat widget on mobile for resume page (interferes with PDF)
+  const isResumePage = pathname === '/resume'
 
   return (
     <>
@@ -17,12 +22,12 @@ export function ChatWidget() {
         )}
       </AnimatePresence>
 
-      {/* Chat Button */}
+      {/* Chat Button - hidden on mobile when chat is open or on resume page */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-red-600 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/30 hover:shadow-red-600/50 transition-shadow"
+        className={`fixed bottom-8 sm:bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-red-600 to-red-700 text-white items-center justify-center shadow-lg shadow-red-600/30 hover:shadow-red-600/50 transition-shadow print:hidden ${isOpen ? 'hidden md:flex' : 'flex'} ${isResumePage ? 'hidden md:flex' : ''}`}
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -52,9 +57,9 @@ export function ChatWidget() {
         </AnimatePresence>
       </motion.button>
 
-      {/* Pulse animation when closed */}
+      {/* Pulse animation when closed - hidden on mobile for resume page */}
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-40 pointer-events-none">
+        <div className={`fixed bottom-8 sm:bottom-6 right-6 z-40 pointer-events-none print:hidden ${isResumePage ? 'hidden md:block' : ''}`}>
           <div className="w-14 h-14 rounded-full bg-red-600 animate-ping opacity-20" />
         </div>
       )}
