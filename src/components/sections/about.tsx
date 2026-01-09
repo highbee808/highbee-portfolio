@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { MapPin } from 'lucide-react'
+import { MapPin, BadgeCheck } from 'lucide-react'
 
 const techStack = [
   { name: 'Next.js', icon: 'devicon-nextjs-plain' },
@@ -111,7 +111,10 @@ export function About() {
                 </div>
               </div>
 
-              <h3 className="text-2xl font-bold text-white mb-1">Ibrahim Lawal</h3>
+              <h3 className="text-2xl font-bold text-white mb-1 flex items-center gap-2">
+                Ibrahim Lawal
+                <BadgeCheck className="w-5 h-5 text-emerald-500 fill-emerald-500/20" />
+              </h3>
               <p className="text-white/50 text-sm mb-4">Full-Stack Developer & AI Specialist</p>
 
               {/* Status badge */}

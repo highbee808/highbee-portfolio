@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 
 interface Particle {
   x: number
@@ -26,9 +26,18 @@ export function ParticleBackground() {
   const particlesRef = useRef<Particle[]>([])
   const mouseRef = useRef({ x: 0, y: 0 })
   const animationRef = useRef<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile on mount
+  useEffect(() => {
+    const checkMobile = window.innerWidth < 768
+    setIsMobile(checkMobile)
+  }, [])
 
   const createParticles = useCallback((width: number, height: number) => {
-    const particleCount = Math.floor((width * height) / 15000)
+    // Reduced particles for better performance
+    const divisor = isMobile ? 50000 : 25000
+    const particleCount = Math.floor((width * height) / divisor)
     const particles: Particle[] = []
 
     for (let i = 0; i < particleCount; i++) {
@@ -46,7 +55,7 @@ export function ParticleBackground() {
     }
 
     return particles
-  }, [])
+  }, [isMobile])
 
   const drawParticle = useCallback(
     (ctx: CanvasRenderingContext2D, particle: Particle, time: number) => {
@@ -218,7 +227,7 @@ export function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-auto"
-      style={{ opacity: 0.77 }}
+      style={{ opacity: 0.55 }}
     />
   )
 }

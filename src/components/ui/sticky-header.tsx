@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import { BadgeCheck } from 'lucide-react'
 
 const roles = ['Full-Stack Developer', 'AI Integration Specialist']
 
@@ -106,8 +107,9 @@ export function StickyHeader() {
 
               {/* Identity info - fixed width to prevent container resizing */}
               <div className="flex flex-col w-[170px]">
-                <span className="text-red-500 font-semibold text-sm leading-tight tracking-tight">
+                <span className="text-red-500 font-semibold text-sm leading-tight tracking-tight flex items-center gap-1">
                   Ibrahim Lawal
+                  <BadgeCheck className="w-4 h-4 text-emerald-500 fill-emerald-500/20" />
                 </span>
                 <div className="h-4 overflow-hidden">
                   <AnimatePresence mode="wait">
@@ -183,22 +185,27 @@ export function StickyHeader() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl md:hidden"
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-40 bg-[#0a0a0f] md:hidden"
         >
           <div className="flex flex-col items-center justify-center min-h-screen px-6">
             <motion.nav
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
+              transition={{ duration: 0.15 }}
               className="flex flex-col items-center gap-6"
             >
               {menuLinks.map((link, index) => (
                 <motion.div
                   key={link.name}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + index * 0.05 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 15,
+                    delay: index * 0.04,
+                  }}
                 >
                   {link.isExternal ? (
                     <Link
@@ -224,7 +231,7 @@ export function StickyHeader() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.2 }}
               className="absolute bottom-12 flex items-center gap-2"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
