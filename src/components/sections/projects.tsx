@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ExternalLink, ArrowRight, Database, Bot, Layers, Zap, Home, Globe, FilePlus } from 'lucide-react'
+import { ExternalLink, ArrowRight, Database, Bot, Layers, Zap, Home, Globe, FilePlus, ThumbsUp } from 'lucide-react'
 import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const featuredMetrics = [
@@ -15,6 +15,16 @@ const featuredMetrics = [
 const featuredTech = ['Next.js 15', 'TypeScript', 'Claude AI', 'Supabase', 'Tailwind']
 
 const otherProjects = [
+  {
+    title: 'Upvotely',
+    description: 'Premium feature voting platform with editorial design. Real-time voting, theme support, and polished animations.',
+    tech: ['Next.js 14', 'Supabase', 'Framer Motion', 'Radix UI'],
+    status: 'Live',
+    link: 'https://upvotely.highbee.dev',
+    caseStudy: '/projects/upvotely',
+    icon: ThumbsUp,
+    gradient: 'from-orange-500 to-orange-600',
+  },
   {
     title: 'RentRight',
     description: 'Property rental marketplace for Nigeria. Digital receipts, rent tracking, and landlord-tenant messaging.',
@@ -214,98 +224,57 @@ export function Projects() {
             </div>
           </motion.div>
 
-          {/* RentRight Card - Order 4 on mobile */}
-          <motion.div
-            variants={cardVariants}
-            whileHover={{ y: -4, transition: { duration: 0.3 } }}
-            className="md:col-span-4 glass rounded-3xl p-6 flex flex-col order-4"
-          >
-            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${otherProjects[0].gradient} flex items-center justify-center mb-5`}>
-              <Home className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex items-start justify-between mb-3">
-              <h4 className="text-xl font-semibold text-white">{otherProjects[0].title}</h4>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[10px] font-medium text-emerald-400">Live</span>
-              </div>
-            </div>
-            <p className="text-sm text-white/50 leading-relaxed mb-4 flex-grow">
-              {otherProjects[0].description}
-            </p>
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {otherProjects[0].tech.map((t) => (
-                <span key={t} className="px-2 py-1 rounded-md bg-white/[0.03] text-[10px] text-white/50">
-                  {t}
-                </span>
-              ))}
-            </div>
-            <div className="pt-4 border-t border-white/10 flex items-center gap-4">
-              <a
-                href={otherProjects[0].link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-red-500 hover:text-red-400 inline-flex items-center gap-1.5 transition-colors"
+          {/* Other Projects - dynamically rendered */}
+          {otherProjects.map((project, index) => {
+            const ProjectIcon = project.icon
+            return (
+              <motion.div
+                key={project.title}
+                variants={cardVariants}
+                whileHover={{ y: -4, transition: { duration: 0.3 } }}
+                className={`md:col-span-4 glass rounded-3xl p-6 flex flex-col order-${index + 4}`}
               >
-                Visit Site <ExternalLink className="w-3 h-3" />
-              </a>
-              <Link
-                href={otherProjects[0].caseStudy!}
-                className="text-sm text-red-500 hover:text-red-400 inline-flex items-center gap-1.5 transition-colors"
-              >
-                Case Study <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Portfolio Card - Order 5 on mobile */}
-          <motion.div
-            variants={cardVariants}
-            whileHover={{ y: -4, transition: { duration: 0.3 } }}
-            className="md:col-span-4 glass rounded-3xl p-6 flex flex-col order-5"
-          >
-            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${otherProjects[1].gradient} flex items-center justify-center mb-5`}>
-              <Globe className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex items-start justify-between mb-3">
-              <h4 className="text-xl font-semibold text-white">{otherProjects[1].title}</h4>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[10px] font-medium text-emerald-400">Live</span>
-              </div>
-            </div>
-            <p className="text-sm text-white/50 leading-relaxed mb-4 flex-grow">
-              {otherProjects[1].description}
-            </p>
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {otherProjects[1].tech.map((t) => (
-                <span key={t} className="px-2 py-1 rounded-md bg-white/[0.03] text-[10px] text-white/50">
-                  {t}
-                </span>
-              ))}
-            </div>
-            <div className="pt-4 border-t border-white/10">
-              <a
-                href={otherProjects[1].link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-red-500 hover:text-red-400 inline-flex items-center gap-1.5 transition-colors"
-              >
-                Visit Site <ExternalLink className="w-3 h-3" />
-              </a>
-            </div>
-          </motion.div>
-
-          {/* CTA Card - Order 6 on mobile */}
-          <motion.div
-            variants={cardVariants}
-            whileHover={{ y: -4, transition: { duration: 0.3 } }}
-            className="md:col-span-4 glass rounded-3xl p-6 flex flex-col items-center justify-center text-center cursor-pointer bg-gradient-to-br from-white/[0.03] to-red-600/[0.05] hover:from-white/[0.05] hover:to-red-600/[0.1] transition-all order-6"
-          >
-            <FilePlus className="w-12 h-12 text-red-500/80 mb-4" />
-            <span className="text-lg font-semibold text-white mb-2">More Coming Soon</span>
-            <span className="text-sm text-white/40">New projects in development</span>
-          </motion.div>
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.gradient} flex items-center justify-center mb-5`}>
+                  <ProjectIcon className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex items-start justify-between mb-3">
+                  <h4 className="text-xl font-semibold text-white">{project.title}</h4>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[10px] font-medium text-emerald-400">Live</span>
+                  </div>
+                </div>
+                <p className="text-sm text-white/50 leading-relaxed mb-4 flex-grow">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {project.tech.map((t) => (
+                    <span key={t} className="px-2 py-1 rounded-md bg-white/[0.03] text-[10px] text-white/50">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <div className="pt-4 border-t border-white/10 flex items-center gap-4">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-red-500 hover:text-red-400 inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    Visit Site <ExternalLink className="w-3 h-3" />
+                  </a>
+                  {project.caseStudy && (
+                    <Link
+                      href={project.caseStudy}
+                      className="text-sm text-red-500 hover:text-red-400 inline-flex items-center gap-1.5 transition-colors"
+                    >
+                      Case Study <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  )}
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
       </motion.div>
     </section>
