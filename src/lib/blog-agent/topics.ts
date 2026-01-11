@@ -1,4 +1,5 @@
-import { Redis } from '@upstash/redis'
+import fs from 'fs'
+import path from 'path'
 import { Category } from './prompts'
 
 export interface PredefinedTopic {
@@ -16,15 +17,9 @@ interface TopicsData {
   lastUpdated: string
 }
 
-// Initialize Redis client
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || '',
-  token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || '',
-})
+const TOPICS_FILE = path.join(process.cwd(), 'data', 'topics.json')
 
-const TOPICS_KEY = 'blog:topics'
-
-// Default topics to seed the database
+// Default topics to seed the file if it doesn't exist
 const DEFAULT_TOPICS: PredefinedTopic[] = [
   {
     id: 'ai-code-review',
@@ -82,72 +77,89 @@ const DEFAULT_TOPICS: PredefinedTopic[] = [
   },
 ]
 
-async function readTopics(): Promise<TopicsData> {
+function readTopics(): TopicsData {
   try {
-    const data = await redis.get<TopicsData>(TOPICS_KEY)
-    if (!data || !data.topics || data.topics.length === 0) {
-      // Seed with default topics if empty
+    if (!fs.existsSync(TOPICS_FILE)) {
+      // Create the file with default topics
       const initialData: TopicsData = {
         topics: DEFAULT_TOPICS,
         lastUpdated: new Date().toISOString(),
       }
-      await redis.set(TOPICS_KEY, initialData)
+      writeTopics(initialData)
       return initialData
     }
-    return data
+    const data = fs.readFileSync(TOPICS_FILE, 'utf-8')
+    return JSON.parse(data)
   } catch (error) {
-    console.error('Error reading topics from Redis:', error)
+    console.error('Error reading topics file:', error)
     return { topics: DEFAULT_TOPICS, lastUpdated: new Date().toISOString() }
   }
 }
 
-async function writeTopics(data: TopicsData): Promise<void> {
-  data.lastUpdated = new Date().toISOString()
-  await redis.set(TOPICS_KEY, data)
+function writeTopics(data: TopicsData): void {
+  try {
+    const dir = path.dirname(TOPICS_FILE)
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
+    data.lastUpdated = new Date().toISOString()
+    fs.writeFileSync(TOPICS_FILE, JSON.stringify(data, null, 2))
+  } catch (error) {
+    console.error('Error writing topics file:', error)
+  }
 }
 
 export async function getPredefinedTopics(): Promise<PredefinedTopic[]> {
-  const data = await readTopics()
+  const data = readTopics()
   return data.topics
 }
 
 export async function getUnusedTopics(): Promise<PredefinedTopic[]> {
-  const data = await readTopics()
+  const data = readTopics()
   return data.topics.filter(t => !t.used)
 }
 
 export async function getTopicsByCategory(category: Category): Promise<PredefinedTopic[]> {
-  const data = await readTopics()
+  const data = readTopics()
   return data.topics.filter(t => t.category === category && !t.used)
 }
 
 export async function getTopicById(id: string): Promise<PredefinedTopic | null> {
-  const data = await readTopics()
+  const data = readTopics()
   return data.topics.find(t => t.id === id) || null
 }
 
 export async function markTopicUsed(id: string): Promise<void> {
-  const data = await readTopics()
+  const data = readTopics()
   const topic = data.topics.find(t => t.id === id)
   if (topic) {
     topic.used = true
     topic.usedAt = new Date().toISOString()
-    await writeTopics(data)
+    writeTopics(data)
   }
 }
 
 export async function resetTopicUsage(id: string): Promise<void> {
-  const data = await readTopics()
+  const data = readTopics()
   const topic = data.topics.find(t => t.id === id)
   if (topic) {
     topic.used = false
     topic.usedAt = null
-    await writeTopics(data)
+    writeTopics(data)
   }
 }
 
+export async function resetAllTopics(): Promise<void> {
+  const data = readTopics()
+  data.topics.forEach(topic => {
+    topic.used = false
+    topic.usedAt = null
+  })
+  writeTopics(data)
+}
+
 export async function addPredefinedTopic(topic: Omit<PredefinedTopic, 'id' | 'used' | 'usedAt'>): Promise<PredefinedTopic> {
-  const data = await readTopics()
+  const data = readTopics()
 
   const newTopic: PredefinedTopic = {
     ...topic,
@@ -157,17 +169,17 @@ export async function addPredefinedTopic(topic: Omit<PredefinedTopic, 'id' | 'us
   }
 
   data.topics.push(newTopic)
-  await writeTopics(data)
+  writeTopics(data)
   return newTopic
 }
 
 export async function removePredefinedTopic(id: string): Promise<boolean> {
-  const data = await readTopics()
+  const data = readTopics()
   const initialLength = data.topics.length
   data.topics = data.topics.filter(t => t.id !== id)
 
   if (data.topics.length < initialLength) {
-    await writeTopics(data)
+    writeTopics(data)
     return true
   }
   return false

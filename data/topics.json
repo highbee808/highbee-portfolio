@@ -1,0 +1,95 @@
+{
+  "topics": [
+    {
+      "id": "ai-code-review",
+      "title": "How AI is Revolutionizing Code Review",
+      "category": "ai",
+      "suggestedTone": "professional",
+      "keywords": ["AI", "code review", "automation", "developer tools"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "typescript-generics",
+      "title": "Mastering TypeScript Generics: From Basics to Advanced Patterns",
+      "category": "typescript",
+      "suggestedTone": "educational",
+      "keywords": ["TypeScript", "generics", "type safety", "programming"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "design-system-tokens",
+      "title": "Building a Design System with Design Tokens",
+      "category": "design",
+      "suggestedTone": "technical",
+      "keywords": ["design systems", "design tokens", "UI", "consistency"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "prompt-engineering",
+      "title": "Prompt Engineering Best Practices for Developers",
+      "category": "ai",
+      "suggestedTone": "conversational",
+      "keywords": ["prompt engineering", "AI", "LLM", "ChatGPT"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "react-server-components",
+      "title": "Understanding React Server Components",
+      "category": "typescript",
+      "suggestedTone": "educational",
+      "keywords": ["React", "server components", "Next.js", "performance"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "micro-interactions",
+      "title": "The Art of Micro-interactions in Web Design",
+      "category": "design",
+      "suggestedTone": "conversational",
+      "keywords": ["micro-interactions", "UX", "animation", "web design"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "nextjs-caching",
+      "title": "Next.js Caching Strategies That Actually Work",
+      "category": "typescript",
+      "suggestedTone": "technical",
+      "keywords": ["Next.js", "caching", "performance", "ISR"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "ai-ux-patterns",
+      "title": "UX Patterns for AI-Powered Features",
+      "category": "design",
+      "suggestedTone": "conversational",
+      "keywords": ["AI", "UX", "user experience", "design patterns"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "building-with-claude",
+      "title": "Building Production Apps with Claude API",
+      "category": "ai",
+      "suggestedTone": "technical",
+      "keywords": ["Claude", "Anthropic", "API", "AI integration"],
+      "used": false,
+      "usedAt": null
+    },
+    {
+      "id": "typescript-error-handling",
+      "title": "Error Handling Patterns in TypeScript",
+      "category": "typescript",
+      "suggestedTone": "educational",
+      "keywords": ["TypeScript", "error handling", "Result type", "best practices"],
+      "used": false,
+      "usedAt": null
+    }
+  ],
+  "lastUpdated": "2026-01-11T00:00:00.000Z"
+}
