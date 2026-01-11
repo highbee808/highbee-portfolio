@@ -6,11 +6,14 @@ import { Testimonials } from '@/components/sections/testimonials'
 import { Blog } from '@/components/sections/blog'
 import { Contact } from '@/components/sections/contact'
 import { Footer } from '@/components/sections/footer'
+import { getFeaturedPosts } from '@/lib/blog-store'
 
 // Revalidate every 60 seconds to fetch fresh blog data
 export const revalidate = 60
 
-export default function Home() {
+export default async function Home() {
+  const blogPosts = await getFeaturedPosts()
+
   return (
     <main>
       <Hero />
@@ -18,7 +21,7 @@ export default function Home() {
       <Services />
       <Projects />
       <Testimonials />
-      <Blog />
+      <Blog posts={blogPosts} />
       <Contact />
       <Footer />
     </main>

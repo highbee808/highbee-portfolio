@@ -3,40 +3,17 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Calendar, Clock, ArrowUpRight, BookOpen } from 'lucide-react'
+import type { BlogPost } from '@/lib/blog-store'
 
-const blogPosts = [
-  {
-    title: 'Building AI-Powered Apps with Claude: A Developer\'s Guide',
-    excerpt: 'Learn how to integrate Claude AI into your Next.js applications with practical examples and best practices. From setting up the API to building conversational interfaces.',
-    category: 'AI Development',
-    categoryColor: 'ai',
-    date: 'Jan 5, 2025',
-    readTime: '8 min read',
-    slug: 'building-ai-apps-with-claude',
-    featured: true,
-  },
-  {
-    title: 'Why I Switched from REST to tRPC',
-    category: 'TypeScript',
-    categoryColor: 'typescript',
-    date: 'Dec 28, 2024',
-    readTime: '5 min',
-    slug: 'rest-to-trpc',
-  },
-  {
-    title: 'Designing Bento Grid Layouts That Convert',
-    category: 'Design',
-    categoryColor: 'design',
-    date: 'Dec 15, 2024',
-    readTime: '6 min',
-    slug: 'bento-grid-layouts',
-  },
-]
+interface BlogProps {
+  posts: BlogPost[]
+}
 
-const categoryColors = {
+const categoryColors: Record<string, string> = {
   ai: 'bg-red-500/15 text-red-400 border-red-500/30',
   typescript: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
   design: 'bg-purple-500/15 text-purple-400 border-purple-500/30',
+  general: 'bg-zinc-500/15 text-zinc-400 border-zinc-500/30',
 }
 
 const containerVariants = {
@@ -59,9 +36,13 @@ const cardVariants = {
   },
 }
 
-export function Blog() {
-  const featured = blogPosts.find((p) => p.featured)
-  const others = blogPosts.filter((p) => !p.featured)
+export function Blog({ posts }: BlogProps) {
+  // First post is featured, rest are others
+  const featured = posts[0]
+  const others = posts.slice(1, 3)
+
+  // If no posts, don't render the section
+  if (!featured) return null
 
   return (
     <section id="blog" className="relative py-24 px-6 overflow-hidden">
