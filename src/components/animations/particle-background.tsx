@@ -226,7 +226,7 @@ export function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-auto"
+      className="absolute inset-0 w-full h-full pointer-events-auto gpu-boost"
       style={{ opacity: 0.55 }}
     />
   )

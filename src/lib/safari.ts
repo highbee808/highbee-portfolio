@@ -1,0 +1,155 @@
+/**
+ * ============================================
+ * SAFARI/iOS DETECTION - STARTER KIT
+ * ============================================
+ * 
+ * Copy this file to: lib/safari.ts
+ * 
+ * Usage:
+ * 
+ * 1. Create components/SafariInit.tsx:
+ *    'use client';
+ *    import { useEffect } from 'react';
+ *    import { initSafari } from '@/lib/safari';
+ *    export function SafariInit() {
+ *      useEffect(() => { initSafari(); }, []);
+ *      return null;
+ *    }
+ * 
+ * 2. Add to app/layout.tsx:
+ *    import { SafariInit } from '@/components/SafariInit';
+ *    // Inside your layout: <SafariInit />
+ * 
+ * Author: Highbee's Starter Kit
+ * ============================================
+ */
+
+// ===========================================
+// DETECTION FUNCTIONS
+// ===========================================
+
+/** Check if browser is Safari */
+export function isSafari(): boolean {
+  if (typeof window === 'undefined') return false;
+  const ua = navigator.userAgent;
+  return /Safari/.test(ua) && !/Chrome/.test(ua) && !/CriOS/.test(ua);
+}
+
+/** Check if device is iOS */
+export function isIOS(): boolean {
+  if (typeof window === 'undefined') return false;
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+// ===========================================
+// AUTO-FIX FUNCTIONS
+// ===========================================
+
+/** Apply GPU acceleration to an element */
+export function gpuBoost(el: HTMLElement): void {
+  el.style.transform = 'translate3d(0, 0, 0)';
+  el.style.backfaceVisibility = 'hidden';
+}
+
+/** Fix all blur elements on the page */
+function fixBlurElements(): void {
+  document.querySelectorAll<HTMLElement>(
+    '[class*="backdrop-blur"], [style*="backdrop-filter"]'
+  ).forEach(el => {
+    el.style.transform = 'translate3d(0, 0, 0)';
+    el.style.isolation = 'isolate';
+  });
+}
+
+/** Fix all animated elements */
+function fixAnimatedElements(): void {
+  document.querySelectorAll<HTMLElement>(
+    '[style*="transform"], [style*="opacity"], .gpu-boost'
+  ).forEach(gpuBoost);
+}
+
+// ===========================================
+// MAIN INIT FUNCTION
+// ===========================================
+
+/**
+ * Initialize Safari fixes
+ * Call this once in your app (useEffect in layout)
+ */
+export function initSafari(): void {
+  if (typeof window === 'undefined') return;
+
+  const html = document.documentElement;
+
+  // Add detection classes to <html>
+  if (isSafari()) {
+    html.classList.add('is-safari');
+    console.log('✓ Safari detected');
+  }
+
+  if (isIOS()) {
+    html.classList.add('is-ios');
+    console.log('✓ iOS detected');
+  }
+
+  // Only apply fixes on Safari/iOS
+  if (!isSafari() && !isIOS()) return;
+
+  // Fix existing elements
+  fixBlurElements();
+  
+  // Fix elements after short delay (catches dynamically rendered ones)
+  setTimeout(fixAnimatedElements, 100);
+
+  // Watch for new elements and fix them
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
+        if (!(node instanceof HTMLElement)) return;
+        
+        const style = node.getAttribute('style') || '';
+        const className = node.className || '';
+
+        // Fix blur elements
+        if (style.includes('backdrop-filter') || className.includes('backdrop-blur')) {
+          node.style.transform = 'translate3d(0, 0, 0)';
+          node.style.isolation = 'isolate';
+        }
+
+        // Fix animated elements
+        if (style.includes('transform') || style.includes('opacity')) {
+          gpuBoost(node);
+        }
+      });
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['style', 'class']
+  });
+}
+
+// ===========================================
+// REACT HOOK (Optional)
+// ===========================================
+
+/**
+ * Hook to apply GPU boost to a ref
+ * 
+ * Usage:
+ * const ref = useGpuBoost<HTMLDivElement>();
+ * return <div ref={ref}>...</div>
+ */
+export function useGpuBoost<T extends HTMLElement>() {
+  return (element: T | null) => {
+    if (element && (isSafari() || isIOS())) {
+      gpuBoost(element);
+    }
+  };
+}
+
+export default { isSafari, isIOS, initSafari, gpuBoost, useGpuBoost };

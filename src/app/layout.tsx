@@ -4,6 +4,7 @@ import { ChatWidget } from "@/components/chat/chat-widget";
 import { StickyHeader } from "@/components/ui/sticky-header";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { SafariInit } from "@/components/SafariInit";
 import "./globals.css";
 
 const inter = Inter({
@@ -91,6 +92,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${instrumentSerif.variable} min-h-screen antialiased`}
       >
+        <SafariInit />
         <CustomCursor />
         <ScrollProgress />
         <StickyHeader />

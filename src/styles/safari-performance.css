@@ -1,0 +1,143 @@
+/**
+ * ============================================
+ * SAFARI/iOS PERFORMANCE FIX - STARTER KIT
+ * ============================================
+ * 
+ * Copy this file to: styles/safari-performance.css
+ * Import in globals.css: @import './safari-performance.css';
+ * 
+ * Usage:
+ *   .gpu-boost        → Add to ANY animated element
+ *   .blur-fix         → Add to elements with backdrop-blur
+ *   .accordion-fix    → Add to accordion/collapsible containers
+ * 
+ * Author: Highbee's Starter Kit
+ * ============================================
+ */
+
+/* ===========================================
+   CORE: GPU ACCELERATION
+   Add .gpu-boost to any animated element
+   =========================================== */
+.gpu-boost {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* With will-change for heavier animations */
+.gpu-boost-heavy {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* ===========================================
+   BLUR FIX (Most Important!)
+   Add .blur-fix to any element with backdrop-blur
+   =========================================== */
+.blur-fix {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  isolation: isolate;
+}
+
+/* Auto-fix common Tailwind blur classes */
+.backdrop-blur,
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+.backdrop-blur-2xl,
+.backdrop-blur-3xl,
+[class*="backdrop-blur"] {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  isolation: isolate;
+}
+
+/* ===========================================
+   ACCORDION/COLLAPSIBLE FIX
+   Add .accordion-fix to accordion containers
+   =========================================== */
+.accordion-fix,
+[data-radix-accordion-root],
+[data-accordion] {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.accordion-fix > *,
+[data-radix-accordion-item],
+[data-accordion-item] {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+[data-radix-accordion-content],
+[data-accordion-content] {
+  will-change: height, opacity;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* ===========================================
+   SCROLL CONTAINERS
+   Add .scroll-fix to scrollable containers
+   =========================================== */
+.scroll-fix {
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* ===========================================
+   SAFARI-ONLY STYLES
+   These only apply when .is-safari is on <html>
+   (Set by the safariDetect script)
+   =========================================== */
+html.is-safari .safari-only-gpu {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Reduce animation duration on iOS for snappier feel */
+html.is-ios .ios-faster {
+  transition-duration: 0.2s !important;
+  animation-duration: 0.2s !important;
+}
+
+/* ===========================================
+   UTILITY CLASSES
+   =========================================== */
+.isolate {
+  isolation: isolate;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-layout {
+  contain: layout;
+}
+
+/* ===========================================
+   REDUCED MOTION (Accessibility)
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
