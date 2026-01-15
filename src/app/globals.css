@@ -196,3 +196,71 @@ body {
 .animate-gradient-shift {
   animation: gradient-shift-border 6s ease infinite;
 }
+
+/* ===========================================
+   DESKTOP: Slightly reduced effects
+   Safari/iOS keeps full effects
+   =========================================== */
+
+/* Reduced glow on desktop */
+.glow-primary {
+  box-shadow: 0 0 30px rgba(220, 38, 38, 0.15);
+}
+
+.glow-secondary {
+  box-shadow: 0 0 20px rgba(153, 27, 27, 0.15);
+}
+
+/* Reduced glass blur on desktop */
+.glass {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-strong {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Reduced ambient glow blurs on desktop */
+[class*="blur-["] {
+  opacity: 0.85;
+}
+
+/* Safari/iOS: Restore full effects */
+html.is-safari .glow-primary,
+html.is-ios .glow-primary {
+  box-shadow: 0 0 40px rgba(220, 38, 38, 0.2);
+}
+
+html.is-safari .glow-secondary,
+html.is-ios .glow-secondary {
+  box-shadow: 0 0 30px rgba(153, 27, 27, 0.2);
+}
+
+html.is-safari .glass,
+html.is-ios .glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+html.is-safari .glass-strong,
+html.is-ios .glass-strong {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+html.is-safari [class*="blur-["],
+html.is-ios [class*="blur-["] {
+  opacity: 1;
+}
+
+/* Particle canvas - reduced on desktop, full on Safari */
+.particle-canvas {
+  opacity: 0.45;
+}
+
+html.is-safari .particle-canvas,
+html.is-ios .particle-canvas {
+  opacity: 0.55;
+}
