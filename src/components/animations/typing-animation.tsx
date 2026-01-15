@@ -69,7 +69,7 @@ export function TypingAnimation({
   }
 
   return (
-    <span className={`inline-flex items-center gpu-boost ${className}`}>
+    <span className={`inline-flex items-center ${className}`}>
       <AnimatePresence mode="wait">
         <motion.span
           key={currentPhraseIndex}
