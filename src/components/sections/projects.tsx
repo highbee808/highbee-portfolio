@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ExternalLink, ArrowRight, Database, Bot, Layers, Zap, Home, ThumbsUp, FolderOpen } from 'lucide-react'
+import { ExternalLink, ArrowRight, Database, Bot, Layers, Zap, Home, ThumbsUp, FolderOpen, ScrollText } from 'lucide-react'
 import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const featuredMetrics = [
@@ -16,6 +16,15 @@ const featuredTech = ['Next.js 15', 'TypeScript', 'Claude AI', 'Supabase', 'Tail
 
 const otherProjects = [
   {
+    title: 'LaunchKit',
+    description: 'Free legal document generator with Spotify-inspired design. 15 document types, Safari-optimized animations, PWA support.',
+    tech: ['Next.js 14', 'TypeScript', 'Framer Motion', 'Tailwind'],
+    link: 'https://launchkit.highbee.dev',
+    caseStudy: '/projects/launchkit',
+    icon: ScrollText,
+    gradient: 'from-green-500 to-green-600',
+  },
+  {
     title: 'Upvotely',
     description: 'Premium feature voting platform with editorial design. Real-time voting, theme support, and polished animations.',
     tech: ['Next.js 14', 'Supabase', 'Framer Motion', 'Radix UI'],
@@ -23,15 +32,6 @@ const otherProjects = [
     caseStudy: '/projects/upvotely',
     icon: ThumbsUp,
     gradient: 'from-orange-500 to-orange-600',
-  },
-  {
-    title: 'RentRight',
-    description: 'Property rental marketplace for Nigeria. Digital receipts, rent tracking, and landlord-tenant messaging.',
-    tech: ['Next.js 16', 'Supabase', 'Paystack', 'PWA'],
-    link: 'https://rentrightng.vercel.app',
-    caseStudy: '/projects/rentright',
-    icon: Home,
-    gradient: 'from-emerald-500 to-emerald-600',
   },
 ]
 

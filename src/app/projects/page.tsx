@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   Code2,
   Sparkles,
+  ScrollText,
 } from 'lucide-react'
 import { ShimmerText } from '@/components/ui/shimmer-text'
 
@@ -30,6 +31,18 @@ const taskRiteMetrics = [
 const taskRiteTech = ['Next.js 15', 'TypeScript', 'Claude AI', 'Supabase', 'Tailwind']
 
 const projects = [
+  {
+    title: 'LaunchKit',
+    tagline: 'Legal Document Generator',
+    description: 'Free legal document generator with Spotify-inspired dark theme. 15 document types, Safari-optimized animations, and PWA support.',
+    tech: ['Next.js 14', 'TypeScript', 'Framer Motion', 'Tailwind'],
+    link: 'https://launchkit.highbee.dev',
+    caseStudy: '/projects/launchkit',
+    icon: ScrollText,
+    gradient: 'from-green-500 to-green-600',
+    accentColor: 'green',
+    borderHover: 'hover:border-green-500/30',
+  },
   {
     title: 'Upvotely',
     tagline: 'Premium Feature Voting',
@@ -68,7 +81,7 @@ const projects = [
 ]
 
 const stats = [
-  { icon: CheckCircle2, value: '4', label: 'Live Projects' },
+  { icon: CheckCircle2, value: '5', label: 'Live Projects' },
   { icon: Code2, value: '100%', label: 'TypeScript' },
   { icon: Sparkles, value: '3', label: 'AI-Powered' },
 ]
@@ -307,6 +320,10 @@ export default function ProjectsPage() {
             {projects.map((project, index) => {
               const ProjectIcon = project.icon
               const accentClasses = {
+                green: {
+                  iconBg: 'from-green-500 to-green-600',
+                  text: 'text-green-500 hover:text-green-400',
+                },
                 orange: {
                   iconBg: 'from-orange-500 to-orange-600',
                   text: 'text-orange-500 hover:text-orange-400',
