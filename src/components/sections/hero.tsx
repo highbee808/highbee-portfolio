@@ -289,7 +289,7 @@ export function Hero() {
             }}
             whileTap={{ scale: 0.97 }}
             onClick={() => scrollToSection('contact')}
-            className="px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-white text-sm sm:text-base border border-white/20 bg-white/5 backdrop-blur-sm transition-all duration-300"
+            className="px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-white text-sm sm:text-base border border-white/20 bg-white/5 backdrop-blur-sm blur-fix transition-all duration-300"
           >
             Let&apos;s Talk
           </motion.button>
@@ -301,7 +301,7 @@ export function Hero() {
               borderColor: 'rgba(255, 255, 255, 0.3)',
             }}
             whileTap={{ scale: 0.97 }}
-            className="hidden sm:inline-flex items-center gap-2 px-6 py-3 sm:py-4 rounded-full font-semibold text-white/70 text-sm sm:text-base border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:text-white"
+            className="hidden sm:inline-flex items-center gap-2 px-6 py-3 sm:py-4 rounded-full font-semibold text-white/70 text-sm sm:text-base border border-white/10 bg-white/[0.02] backdrop-blur-sm blur-fix transition-all duration-300 hover:text-white"
           >
             <Download className="w-4 h-4" />
             Resume
