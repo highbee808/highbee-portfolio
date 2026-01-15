@@ -9,6 +9,111 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
 })
 
+/**
+ * Robustly parse AI response that may contain JSON
+ * Handles: code blocks, unescaped characters, trailing commas
+ */
+function parseAIResponse(rawResponse: string): GeneratedPost {
+  let jsonStr = rawResponse
+
+  // 1. Remove markdown code blocks if present
+  jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '')
+
+  // 2. Try to extract JSON object
+  const jsonMatch = jsonStr.match(/\{[\s\S]*\}/)
+  if (!jsonMatch) {
+    throw new Error('No JSON object found in response')
+  }
+  jsonStr = jsonMatch[0]
+
+  // 3. Try parsing as-is first
+  try {
+    return JSON.parse(jsonStr)
+  } catch {
+    // Continue to fixes
+  }
+
+  // 4. Fix common issues
+  // Remove trailing commas before } or ]
+  jsonStr = jsonStr.replace(/,(\s*[}\]])/g, '$1')
+
+  // Try parsing again
+  try {
+    return JSON.parse(jsonStr)
+  } catch {
+    // Continue to more aggressive fixes
+  }
+
+  // 5. Try to fix unescaped newlines in content field
+  // This is the most common issue - content has literal newlines instead of \n
+  try {
+    // Find the content field and properly escape it
+    const contentMatch = jsonStr.match(/"content"\s*:\s*"([\s\S]*?)"\s*,\s*"category"/)
+    if (contentMatch) {
+      const originalContent = contentMatch[1]
+      const fixedContent = originalContent
+        .replace(/\\/g, '\\\\')  // Escape backslashes first
+        .replace(/"/g, '\\"')    // Escape quotes
+        .replace(/\n/g, '\\n')   // Escape newlines
+        .replace(/\r/g, '\\r')   // Escape carriage returns
+        .replace(/\t/g, '\\t')   // Escape tabs
+
+      jsonStr = jsonStr.replace(
+        /"content"\s*:\s*"[\s\S]*?"\s*,\s*"category"/,
+        `"content": "${fixedContent}", "category"`
+      )
+    }
+
+    return JSON.parse(jsonStr)
+  } catch {
+    // Last resort failed
+  }
+
+  // 6. Final attempt: try to extract fields manually
+  try {
+    const titleMatch = jsonStr.match(/"title"\s*:\s*"([^"]+)"/)
+    const excerptMatch = jsonStr.match(/"excerpt"\s*:\s*"([^"]+)"/)
+    const categoryMatch = jsonStr.match(/"category"\s*:\s*"([^"]+)"/)
+    const categoryColorMatch = jsonStr.match(/"categoryColor"\s*:\s*"([^"]+)"/)
+
+    // For content, find it between "content": " and the next field
+    const contentStart = jsonStr.indexOf('"content"')
+    const contentValueStart = jsonStr.indexOf('"', contentStart + 9) + 1
+    let depth = 0
+    let contentEnd = contentValueStart
+
+    for (let i = contentValueStart; i < jsonStr.length; i++) {
+      if (jsonStr[i] === '\\') {
+        i++ // Skip escaped character
+        continue
+      }
+      if (jsonStr[i] === '"' && depth === 0) {
+        contentEnd = i
+        break
+      }
+    }
+
+    const content = jsonStr.substring(contentValueStart, contentEnd)
+      .replace(/\\n/g, '\n')
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, '\\')
+
+    if (titleMatch && content) {
+      return {
+        title: titleMatch[1],
+        excerpt: excerptMatch?.[1] || '',
+        content: content,
+        category: categoryMatch?.[1] || 'General',
+        categoryColor: (categoryColorMatch?.[1] || 'general') as Category,
+      }
+    }
+  } catch {
+    // Manual extraction failed
+  }
+
+  throw new Error('Could not parse JSON after all attempts')
+}
+
 export interface GenerateOptions {
   topic: string
   tone: Tone
@@ -59,18 +164,13 @@ export async function generateBlogPost(options: GenerateOptions) {
 
   const rawResponse = textContent.text.trim()
 
-  // Parse the JSON response
+  // Parse the JSON response with robust error handling
   let generated: GeneratedPost
   try {
-    // Try to extract JSON if wrapped in code blocks
-    const jsonMatch = rawResponse.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
-      throw new Error('No JSON found in response')
-    }
-    generated = JSON.parse(jsonMatch[0])
+    generated = parseAIResponse(rawResponse)
   } catch (parseError) {
-    console.error('Failed to parse AI response:', rawResponse)
-    throw new Error('Failed to parse AI response as JSON')
+    console.error('Failed to parse AI response:', rawResponse.substring(0, 500))
+    throw new Error('Failed to parse AI response as JSON. The AI may have generated invalid content. Please try again.')
   }
 
   // Validate required fields
