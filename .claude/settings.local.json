@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm run build:*)",
       "WebFetch(domain:motion.dev)",
-      "WebFetch(domain:upvotely.highbee.dev)"
+      "WebFetch(domain:upvotely.highbee.dev)",
+      "WebFetch(domain:localhost)",
+      "WebFetch(domain:192.168.138.1)"
     ]
   }
 }

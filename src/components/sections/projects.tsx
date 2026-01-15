@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ExternalLink, ArrowRight, Database, Bot, Layers, Zap, Home, Globe, FilePlus, ThumbsUp } from 'lucide-react'
+import { ExternalLink, ArrowRight, Database, Bot, Layers, Zap, Home, ThumbsUp, FolderOpen } from 'lucide-react'
 import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const featuredMetrics = [
@@ -19,7 +19,6 @@ const otherProjects = [
     title: 'Upvotely',
     description: 'Premium feature voting platform with editorial design. Real-time voting, theme support, and polished animations.',
     tech: ['Next.js 14', 'Supabase', 'Framer Motion', 'Radix UI'],
-    status: 'Live',
     link: 'https://upvotely.highbee.dev',
     caseStudy: '/projects/upvotely',
     icon: ThumbsUp,
@@ -29,20 +28,10 @@ const otherProjects = [
     title: 'RentRight',
     description: 'Property rental marketplace for Nigeria. Digital receipts, rent tracking, and landlord-tenant messaging.',
     tech: ['Next.js 16', 'Supabase', 'Paystack', 'PWA'],
-    status: 'Live',
     link: 'https://rentrightng.vercel.app',
     caseStudy: '/projects/rentright',
     icon: Home,
     gradient: 'from-emerald-500 to-emerald-600',
-  },
-  {
-    title: 'Portfolio Site',
-    description: 'This website! Built with Next.js 15, featuring an AI chat assistant powered by Claude.',
-    tech: ['Next.js 15', 'Claude AI', 'Framer Motion', 'Tailwind'],
-    status: 'Live',
-    link: 'https://highbee.dev',
-    icon: Globe,
-    gradient: 'from-slate-500 to-slate-600',
   },
 ]
 
@@ -85,11 +74,11 @@ export function Projects() {
       >
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-          {/* Header Card - Order 1 on mobile */}
+          {/* Header Card */}
           <motion.div
             variants={cardVariants}
             whileHover={{ y: -4, transition: { duration: 0.3 } }}
-            className="md:col-span-5 glass rounded-3xl p-8 flex flex-col justify-center order-1"
+            className="md:col-span-5 md:row-start-1 glass rounded-3xl p-8 flex flex-col justify-center"
           >
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-px bg-gradient-to-r from-red-500 to-transparent" />
@@ -104,11 +93,11 @@ export function Projects() {
             </h2>
           </motion.div>
 
-          {/* TaskRite Featured Card - Order 2 on mobile */}
+          {/* TaskRite Featured Card */}
           <motion.div
             variants={cardVariants}
             whileHover={{ y: -6, transition: { duration: 0.3 } }}
-            className="md:col-span-7 md:row-span-2 relative order-2"
+            className="md:col-span-7 md:col-start-6 md:row-start-1 md:row-span-2 relative"
           >
             {/* Animated gradient border */}
             <div className="absolute inset-0 rounded-3xl p-[2px] bg-gradient-to-br from-red-600 via-zinc-600 to-red-600 bg-[length:200%_200%] animate-gradient-shift">
@@ -199,11 +188,11 @@ export function Projects() {
             </div>
           </motion.div>
 
-          {/* Metrics Card - Order 3 on mobile */}
+          {/* Metrics Card */}
           <motion.div
             variants={cardVariants}
             whileHover={{ y: -4, transition: { duration: 0.3 } }}
-            className="md:col-span-5 glass rounded-3xl p-6 order-3"
+            className="md:col-span-5 md:col-start-1 md:row-start-2 glass rounded-3xl p-6"
           >
             <div className="grid grid-cols-2 gap-4 h-full">
               {featuredMetrics.map((metric, index) => (
@@ -225,14 +214,14 @@ export function Projects() {
           </motion.div>
 
           {/* Other Projects - dynamically rendered */}
-          {otherProjects.map((project, index) => {
+          {otherProjects.map((project) => {
             const ProjectIcon = project.icon
             return (
               <motion.div
                 key={project.title}
                 variants={cardVariants}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
-                className={`md:col-span-4 glass rounded-3xl p-6 flex flex-col order-${index + 4}`}
+                className="md:col-span-4 md:row-start-3 glass rounded-3xl p-6 flex flex-col"
               >
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.gradient} flex items-center justify-center mb-5`}>
                   <ProjectIcon className="w-6 h-6 text-white" />
@@ -275,6 +264,24 @@ export function Projects() {
               </motion.div>
             )
           })}
+
+          {/* View All Projects CTA */}
+          <motion.div
+            variants={cardVariants}
+            whileHover={{ y: -4, transition: { duration: 0.3 } }}
+            className="md:col-span-4 md:row-start-3 glass rounded-3xl p-6 flex flex-col items-center justify-center text-center bg-gradient-to-br from-white/[0.02] to-red-600/[0.05] hover:border-red-500/30 transition-colors min-h-[280px]"
+          >
+            <Link href="/projects" className="flex flex-col items-center group">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mb-5 shadow-[0_4px_20px_rgba(220,38,38,0.3)] group-hover:shadow-[0_6px_28px_rgba(220,38,38,0.4)] transition-shadow">
+                <FolderOpen className="w-6 h-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold text-white mb-2 flex items-center gap-2">
+                View All Projects
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </h4>
+              <p className="text-sm text-white/40">Explore more of my work</p>
+            </Link>
+          </motion.div>
         </div>
       </motion.div>
     </section>
