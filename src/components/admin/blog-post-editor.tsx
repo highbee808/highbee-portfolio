@@ -150,7 +150,7 @@ export function BlogPostEditor({ post }: BlogPostEditorProps) {
         categoryColor: category,
         content,
         coverImage: coverImage || undefined,
-        published: asDraft ? false : published,
+        published: !asDraft,
         featuredOnHomepage,
         date: post?.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         readTime: estimateReadTime(content),
