@@ -105,18 +105,28 @@ export async function generateBlogPost(options: GenerateOptions) {
 
   // 2. Process video placeholder: [VIDEO: query]
   const videoMatch = enrichedContent.match(/\[VIDEO:\s*(.+?)\]/)
+  let videoWarning: string | null = null
   if (videoMatch) {
     const videoQuery = videoMatch[1]
-    const video = await searchYouTubeVideo(videoQuery)
-    if (video) {
-      // Replace placeholder with video embed
-      enrichedContent = enrichedContent.replace(
-        videoMatch[0],
-        generateVideoEmbed(video)
-      )
-    } else {
-      // Remove placeholder if no video found
+
+    // Check if YouTube API is configured
+    if (!process.env.YOUTUBE_API_KEY) {
+      console.warn('[Generator] YOUTUBE_API_KEY not configured - video embed skipped')
+      videoWarning = `Video embed skipped: YouTube API key not configured. Search query was: "${videoQuery}"`
       enrichedContent = enrichedContent.replace(videoMatch[0], '')
+    } else {
+      const video = await searchYouTubeVideo(videoQuery)
+      if (video) {
+        // Replace placeholder with video embed
+        enrichedContent = enrichedContent.replace(
+          videoMatch[0],
+          generateVideoEmbed(video)
+        )
+      } else {
+        // Remove placeholder if no video found
+        console.warn(`[Generator] No YouTube video found for query: "${videoQuery}"`)
+        enrichedContent = enrichedContent.replace(videoMatch[0], '')
+      }
     }
   }
 
@@ -166,6 +176,7 @@ export async function generateBlogPost(options: GenerateOptions) {
       ...generated,
       content: enrichedContent,
     },
+    warnings: videoWarning ? [videoWarning] : [],
   }
 }
 

@@ -27,28 +27,27 @@ export async function fetchCoverImage(topic: string): Promise<string | null> {
   }
 
   try {
-    // Extract meaningful keywords from the topic (skip common words)
+    // Clean up the query - keep it descriptive but remove filler words
     const stopWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'shall', 'can', 'that', 'which', 'who', 'whom', 'this', 'these', 'those', 'i', 'you', 'he', 'she', 'it', 'we', 'they', 'what', 'how', 'why', 'when', 'where', 'my', 'your', 'his', 'her', 'its', 'our', 'their']
 
+    // Keep more keywords for better accuracy - up to 5 meaningful words
     const keywords = topic
       .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, '') // Remove special characters
+      .replace(/[^a-z0-9\s]/g, '')
       .split(/\s+/)
-      .filter(word => word.length > 3 && !stopWords.includes(word))
-      .slice(0, 3) // Take top 3 keywords
+      .filter(word => word.length > 2 && !stopWords.includes(word))
+      .slice(0, 5)
       .join(' ')
 
     if (!keywords) {
-      // Fallback to generic tech-related search
       return fetchGenericTechImage()
     }
 
-    const response = await fetch(
-      `https://api.pexels.com/v1/search?query=${encodeURIComponent(keywords)}&per_page=5&orientation=landscape`,
+    // Try the full query first
+    let response = await fetch(
+      `https://api.pexels.com/v1/search?query=${encodeURIComponent(keywords)}&per_page=10&orientation=landscape`,
       {
-        headers: {
-          Authorization: apiKey,
-        },
+        headers: { Authorization: apiKey },
       }
     )
 
@@ -57,15 +56,28 @@ export async function fetchCoverImage(topic: string): Promise<string | null> {
       return fetchGenericTechImage()
     }
 
-    const data: PexelsResponse = await response.json()
+    let data: PexelsResponse = await response.json()
+
+    // If no results, try with fewer keywords
+    if (!data.photos || data.photos.length === 0) {
+      const reducedKeywords = keywords.split(' ').slice(0, 3).join(' ')
+      response = await fetch(
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(reducedKeywords)}&per_page=10&orientation=landscape`,
+        {
+          headers: { Authorization: apiKey },
+        }
+      )
+      if (response.ok) {
+        data = await response.json()
+      }
+    }
 
     if (data.photos && data.photos.length > 0) {
-      // Pick a random photo from the results for variety
+      // Pick from top results (most relevant)
       const randomIndex = Math.floor(Math.random() * Math.min(data.photos.length, 3))
       return data.photos[randomIndex].src.large2x || data.photos[randomIndex].src.large
     }
 
-    // No results for topic, try generic tech image
     return fetchGenericTechImage()
   } catch (error) {
     console.error('Failed to fetch cover image:', error)

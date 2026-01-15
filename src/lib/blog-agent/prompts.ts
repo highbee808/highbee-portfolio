@@ -142,13 +142,18 @@ Write a complete blog post about: "${topic}"
 To make the blog post more engaging with visuals:
 
 1. **Inline Images**: After major sections (## headings), include 1-2 image placeholders using this format:
-   ![IMAGE: specific searchable description]
+   ![IMAGE: simple searchable terms]
 
-   Example: ![IMAGE: developer typing on laptop with multiple monitors]
+   IMPORTANT - Image descriptions must be SIMPLE NOUNS that Pexels can find:
+   - GOOD: "laptop code screen", "server room", "team meeting office", "mobile app design"
+   - BAD: "developer typing on laptop with multiple monitors showing code" (too specific)
 
-   - Make descriptions specific and searchable (they'll be used to find images from Pexels)
-   - Focus on tech/development related imagery
-   - Include 2-3 image placeholders throughout the post
+   Keep descriptions to 2-4 words maximum. Focus on:
+   - Objects: laptop, computer, server, phone, code, keyboard
+   - Settings: office, workspace, meeting room, data center
+   - Actions: coding, programming, teamwork, brainstorming
+
+   Include 2-3 image placeholders throughout the post.
 
 2. **Video Embeds**: For educational or tutorial content, suggest ONE relevant YouTube video using:
    [VIDEO: search terms for relevant tutorial]
