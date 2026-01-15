@@ -47,15 +47,24 @@
   isolation: isolate;
 }
 
-/* Auto-fix common Tailwind blur classes */
-.backdrop-blur,
-.backdrop-blur-sm,
-.backdrop-blur-md,
-.backdrop-blur-lg,
-.backdrop-blur-xl,
-.backdrop-blur-2xl,
-.backdrop-blur-3xl,
-[class*="backdrop-blur"] {
+/* Auto-fix Tailwind blur classes - ONLY on Safari/iOS */
+/* Detection classes (.is-safari, .is-ios) are added by SafariInit */
+html.is-safari .backdrop-blur,
+html.is-safari .backdrop-blur-sm,
+html.is-safari .backdrop-blur-md,
+html.is-safari .backdrop-blur-lg,
+html.is-safari .backdrop-blur-xl,
+html.is-safari .backdrop-blur-2xl,
+html.is-safari .backdrop-blur-3xl,
+html.is-safari [class*="backdrop-blur"],
+html.is-ios .backdrop-blur,
+html.is-ios .backdrop-blur-sm,
+html.is-ios .backdrop-blur-md,
+html.is-ios .backdrop-blur-lg,
+html.is-ios .backdrop-blur-xl,
+html.is-ios .backdrop-blur-2xl,
+html.is-ios .backdrop-blur-3xl,
+html.is-ios [class*="backdrop-blur"] {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
   isolation: isolate;
