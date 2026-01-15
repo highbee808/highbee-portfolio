@@ -172,7 +172,7 @@ export function Services() {
           <motion.div
             variants={cardVariants}
             whileHover={{ y: -4, transition: { duration: 0.3 } }}
-            className="md:col-span-5 md:row-span-2 glass rounded-3xl p-8 flex flex-col relative overflow-hidden bg-gradient-to-br from-red-600/[0.12] to-red-600/[0.03] border-red-500/25 shadow-[0_0_60px_rgba(220,38,38,0.15)] hover:border-red-500/40 hover:shadow-[0_0_80px_rgba(220,38,38,0.25)]"
+            className="md:col-span-5 md:row-span-2 glass rounded-3xl p-8 flex flex-col relative overflow-hidden bg-gradient-to-br from-red-600/[0.12] to-red-600/[0.03] border-red-500/25 shadow-[0_0_60px_rgba(220,38,38,0.15)] hover:border-red-500/40"
           >
             {/* Popular Badge */}
             <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-gradient-to-r from-red-600 to-red-700 text-white text-xs font-semibold uppercase tracking-wide shadow-[0_4px_20px_rgba(220,38,38,0.4)]">
