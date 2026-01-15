@@ -44,7 +44,8 @@ export function Footer() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-400/50 to-transparent" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        <div className="flex flex-col gap-10 mb-12">
+        {/* Three columns on desktop, stacked on mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -59,7 +60,7 @@ export function Footer() {
                 High<span className="text-gradient">bee</span>
               </h3>
             </div>
-            <p className="text-white/50 text-sm leading-relaxed max-w-sm">
+            <p className="text-white/50 text-sm leading-relaxed">
               Full-Stack Developer & AI Integration Specialist. Building the future,
               one line of code at a time.
             </p>
@@ -82,50 +83,47 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Navigation & Contact - side by side on mobile, separate columns on desktop */}
-          <div className="grid grid-cols-2 md:grid-cols-2 gap-8 md:max-w-md">
-            {/* Navigation */}
-            <div>
-              <h4 className="text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
-                Navigation
-              </h4>
-              <ul className="space-y-3">
-                {navLinks.map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="text-white/50 hover:text-white transition-colors text-sm"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
-                Get In Touch
-              </h4>
-              <ul className="space-y-3 text-sm">
-                <li>
+          {/* Navigation */}
+          <div>
+            <h4 className="text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
+              Navigation
+            </h4>
+            <ul className="space-y-3">
+              {navLinks.map((link) => (
+                <li key={link.name}>
                   <a
-                    href="mailto:hello@highbee.dev"
-                    className="text-white/50 hover:text-slate-300 transition-colors"
+                    href={link.href}
+                    className="text-white/50 hover:text-white transition-colors text-sm"
                   >
-                    hello@highbee.dev
+                    {link.name}
                   </a>
                 </li>
-                <li className="text-white/50">Lagos, Nigeria</li>
-                <li>
-                  <span className="inline-flex items-center gap-2 text-emerald-400 text-xs">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    Available for projects
-                  </span>
-                </li>
-              </ul>
-            </div>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
+              Get In Touch
+            </h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <a
+                  href="mailto:hello@highbee.dev"
+                  className="text-white/50 hover:text-slate-300 transition-colors"
+                >
+                  hello@highbee.dev
+                </a>
+              </li>
+              <li className="text-white/50">Lagos, Nigeria</li>
+              <li>
+                <span className="inline-flex items-center gap-2 text-emerald-400 text-xs">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Available for projects
+                </span>
+              </li>
+            </ul>
           </div>
         </div>
 
