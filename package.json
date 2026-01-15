@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
+    "@supabase/supabase-js": "^2.90.1",
     "@upstash/redis": "^1.36.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.24.8",

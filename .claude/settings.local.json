@@ -5,7 +5,13 @@
       "WebFetch(domain:motion.dev)",
       "WebFetch(domain:upvotely.highbee.dev)",
       "WebFetch(domain:localhost)",
-      "WebFetch(domain:192.168.138.1)"
+      "WebFetch(domain:192.168.138.1)",
+      "Bash(findstr:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nperf: Add Safari/iOS performance fixes for animation lag\n\n- Add Safari detection and auto-fix utilities \\(lib/safari.ts\\)\n- Add Safari-safe Framer Motion components \\(lib/motion.tsx\\)\n- Add SafariInit component to layout for automatic initialization\n- Add safari-performance.css with GPU acceleration utilities\n- Add blur-fix class to backdrop-blur elements \\(sticky header, hero buttons\\)\n- Add gpu-boost class to heavy animations \\(particle bg, typing animation\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)"
     ]
   }
 }

@@ -8,8 +8,8 @@ import { Contact } from '@/components/sections/contact'
 import { Footer } from '@/components/sections/footer'
 import { getFeaturedPosts } from '@/lib/blog-store'
 
-// Revalidate every 60 seconds to fetch fresh blog data
-export const revalidate = 60
+// Force dynamic rendering (requires Supabase at runtime)
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
   const blogPosts = await getFeaturedPosts()
