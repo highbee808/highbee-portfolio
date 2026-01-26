@@ -293,18 +293,18 @@ export function Contact() {
               </div>
             </div>
 
-            {/* Calendly embed placeholder */}
+            {/* Cal.com embed */}
             <div className="glass rounded-2xl p-6 overflow-hidden">
               <h4 className="font-medium text-white mb-4 flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-slate-300" />
                 Schedule a Call
               </h4>
 
-              {/* Calendly will be embedded here */}
+              {/* Calendar embed */}
               <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
-                {process.env.NEXT_PUBLIC_CALENDLY_URL ? (
+                {process.env.NEXT_PUBLIC_CAL_URL ? (
                   <iframe
-                    src={`${process.env.NEXT_PUBLIC_CALENDLY_URL}?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0a0a0f&text_color=ffffff&primary_color=8b5cf6`}
+                    src={`${process.env.NEXT_PUBLIC_CAL_URL}?embed=true&theme=dark`}
                     width="100%"
                     height="600"
                     frameBorder="0"
@@ -314,7 +314,7 @@ export function Contact() {
                   <div className="p-8 text-center">
                     <Calendar className="w-12 h-12 text-white/20 mx-auto mb-4" />
                     <p className="text-white/60 mb-4">
-                      Calendly integration coming soon.
+                      Cal integration coming soon.
                     </p>
                     <p className="text-sm text-white/40">
                       For now, use the contact form or email me directly.
