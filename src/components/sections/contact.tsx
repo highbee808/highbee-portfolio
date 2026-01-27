@@ -302,25 +302,13 @@ export function Contact() {
 
               {/* Calendar embed */}
               <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
-                {process.env.NEXT_PUBLIC_CAL_URL ? (
-                  <iframe
-                    src={`${process.env.NEXT_PUBLIC_CAL_URL}?embed=true&theme=dark`}
-                    width="100%"
-                    height="600"
-                    frameBorder="0"
-                    className="rounded-xl"
-                  />
-                ) : (
-                  <div className="p-8 text-center">
-                    <Calendar className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                    <p className="text-white/60 mb-4">
-                      Cal integration coming soon.
-                    </p>
-                    <p className="text-sm text-white/40">
-                      For now, use the contact form or email me directly.
-                    </p>
-                  </div>
-                )}
+                <iframe
+                  src="https://cal.com/ibrahim-lawal-wj6g11/30min?embed=true&theme=dark"
+                  width="100%"
+                  height="600"
+                  frameBorder="0"
+                  className="rounded-xl"
+                />
               </div>
 
               {/* Direct email link */}
