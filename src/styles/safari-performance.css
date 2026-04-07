@@ -127,6 +127,18 @@ html.is-ios .ios-faster {
 }
 
 /* ===========================================
+   iOS SCROLL FIX — FORCE VISIBLE ON iOS
+   Framer Motion sets opacity:0 via inline style when initial="hidden".
+   On iOS, IntersectionObserver never fires during momentum scroll,
+   so those elements stay invisible. Override with !important so
+   content is always visible before JS runs.
+   =========================================== */
+html.is-ios [style*="opacity: 0"],
+html.is-ios [style*="opacity:0"] {
+  opacity: 1 !important;
+}
+
+/* ===========================================
    DISABLE HEAVY INFINITE ANIMATIONS ON iOS
    Frees GPU compositing budget for rendering
    =========================================== */

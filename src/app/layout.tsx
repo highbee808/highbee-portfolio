@@ -84,6 +84,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var ua=navigator.userAgent;var isIOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);var isSafari=/Safari/.test(ua)&&!/Chrome/.test(ua)&&!/CriOS/.test(ua);if(isIOS)document.documentElement.classList.add('is-ios');if(isSafari)document.documentElement.classList.add('is-safari');})();`,
+          }}
+        />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"

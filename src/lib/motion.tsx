@@ -45,9 +45,14 @@ function isIOS(): boolean {
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
+function getIsIOSSync(): boolean {
+  if (typeof document === 'undefined') return false;
+  return document.documentElement.classList.contains('is-ios');
+}
+
 export function useIsIOS(): boolean {
-  const [ios, setIos] = useState(false);
-  useEffect(() => { setIos(isIOS()); }, []);
+  const [ios, setIos] = useState(() => getIsIOSSync());
+  useEffect(() => { setIos(getIsIOSSync() || isIOS()); }, []);
   return ios;
 }
 
@@ -99,11 +104,9 @@ interface UseSafeMotionOptions {
  */
 export function useSafeMotion(options: UseSafeMotionOptions = {}) {
   const { duration = 0.4, delay = 0 } = options;
-  const [mounted, setMounted] = useState(false);
+  const [needsFix, setNeedsFix] = useState(() => getIsIOSSync());
 
-  useEffect(() => setMounted(true), []);
-
-  const needsFix = mounted && (isSafari() || isIOS());
+  useEffect(() => setNeedsFix(isSafari() || isIOS()), []);
 
   // GPU-boost styles
   const style: React.CSSProperties = needsFix ? {
