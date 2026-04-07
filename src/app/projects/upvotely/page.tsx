@@ -21,6 +21,7 @@ import {
   Type,
   Box,
 } from 'lucide-react'
+import { SafeInView } from '@/lib/motion'
 
 const stats = [
   { icon: ThumbsUp, value: 'Real-time', label: 'Voting' },
@@ -216,9 +217,9 @@ export default function UpvotelyCaseStudy() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-orange-950/5 to-transparent" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -229,14 +230,14 @@ export default function UpvotelyCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Design <span className="text-gradient">Philosophy</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {designPrinciples.map((principle, index) => (
-              <motion.div
+              <SafeInView
                 key={principle.title}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -247,7 +248,7 @@ export default function UpvotelyCaseStudy() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{principle.title}</h3>
                 <p className="text-sm text-white/50">{principle.description}</p>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
         </div>
@@ -256,9 +257,9 @@ export default function UpvotelyCaseStudy() {
       {/* Features Section */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -269,14 +270,14 @@ export default function UpvotelyCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Key <span className="text-gradient">Capabilities</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {features.map((feature, index) => (
-              <motion.div
+              <SafeInView
                 key={feature.title}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -287,7 +288,7 @@ export default function UpvotelyCaseStudy() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
                 <p className="text-sm text-white/50">{feature.description}</p>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
         </div>
@@ -298,9 +299,9 @@ export default function UpvotelyCaseStudy() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-orange-950/5 to-transparent" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -311,12 +312,12 @@ export default function UpvotelyCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Implementation <span className="text-gradient">Highlights</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <motion.div
+            <SafeInView
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
               className="glass rounded-3xl p-6"
@@ -328,11 +329,11 @@ export default function UpvotelyCaseStudy() {
               <p className="text-sm text-white/50">
                 Vote counts update instantly with database sync and automatic rollback on error for seamless UX.
               </p>
-            </motion.div>
+            </SafeInView>
 
-            <motion.div
+            <SafeInView
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -345,11 +346,11 @@ export default function UpvotelyCaseStudy() {
               <p className="text-sm text-white/50">
                 Framer Motion spring animations on vote counts create satisfying, natural-feeling interactions.
               </p>
-            </motion.div>
+            </SafeInView>
 
-            <motion.div
+            <SafeInView
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -362,7 +363,7 @@ export default function UpvotelyCaseStudy() {
               <p className="text-sm text-white/50">
                 localStorage tracking prevents duplicate votes while maintaining a frictionless experience.
               </p>
-            </motion.div>
+            </SafeInView>
           </div>
         </div>
       </section>
@@ -370,9 +371,9 @@ export default function UpvotelyCaseStudy() {
       {/* Results Section */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -383,11 +384,11 @@ export default function UpvotelyCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               The <span className="text-gradient">Outcome</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -4, transition: { duration: 0.3 } }}
             className="glass rounded-3xl p-8"
@@ -408,16 +409,16 @@ export default function UpvotelyCaseStudy() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </SafeInView>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="glass rounded-3xl p-8 md:p-12 text-center relative overflow-hidden"
           >
@@ -455,7 +456,7 @@ export default function UpvotelyCaseStudy() {
                 </Link>
               </div>
             </div>
-          </motion.div>
+          </SafeInView>
         </div>
       </section>
 

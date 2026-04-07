@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Bot, Code, Rocket, ArrowRight, Check, MessageSquare, ShieldCheck } from 'lucide-react'
+import { SafeMotionDiv } from '@/lib/motion'
 import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const services = [
@@ -92,11 +93,9 @@ export function Services() {
         }}
       />
 
-      <motion.div
+      <SafeMotionDiv
         variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
+        viewport={{ once: true, margin: '0px' }}
         className="relative z-10 max-w-6xl mx-auto"
       >
         {/* Bento Grid */}
@@ -257,7 +256,7 @@ export function Services() {
             </span>
           </motion.div>
         </div>
-      </motion.div>
+      </SafeMotionDiv>
     </section>
   )
 }

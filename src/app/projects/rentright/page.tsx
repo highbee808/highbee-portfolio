@@ -22,6 +22,7 @@ import {
   Globe,
   FileText,
 } from 'lucide-react'
+import { SafeInView } from '@/lib/motion'
 
 const stats = [
   { icon: Users, value: '500+', label: 'Beta Users' },
@@ -211,9 +212,9 @@ export default function RentRightCaseStudy() {
       {/* Features Section - Bento Grid */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -224,14 +225,14 @@ export default function RentRightCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Key <span className="text-gradient">Capabilities</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {features.map((feature, index) => (
-              <motion.div
+              <SafeInView
                 key={feature.title}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -242,7 +243,7 @@ export default function RentRightCaseStudy() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
                 <p className="text-sm text-white/50">{feature.description}</p>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
         </div>
@@ -253,9 +254,9 @@ export default function RentRightCaseStudy() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-950/5 to-transparent" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -266,13 +267,13 @@ export default function RentRightCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Two-Sided <span className="text-gradient">Experience</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Landlord Card */}
-            <motion.div
+            <SafeInView
               initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              animate={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
               className="glass rounded-3xl p-6 md:p-8"
@@ -294,12 +295,12 @@ export default function RentRightCaseStudy() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </SafeInView>
 
             {/* Tenant Card */}
-            <motion.div
+            <SafeInView
               initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              animate={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
               className="glass rounded-3xl p-6 md:p-8"
@@ -321,7 +322,7 @@ export default function RentRightCaseStudy() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </SafeInView>
           </div>
         </div>
       </section>
@@ -329,9 +330,9 @@ export default function RentRightCaseStudy() {
       {/* Design for Nigeria Section */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -342,7 +343,7 @@ export default function RentRightCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Built for <span className="text-gradient">Nigeria</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
@@ -351,10 +352,10 @@ export default function RentRightCaseStudy() {
               { icon: FileText, title: 'Naira Support', description: 'Proper ₦ rendering' },
               { icon: Zap, title: 'Offline-Ready', description: 'PWA for poor connectivity' },
             ].map((item, index) => (
-              <motion.div
+              <SafeInView
                 key={item.title}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -363,7 +364,7 @@ export default function RentRightCaseStudy() {
                 <item.icon className="w-10 h-10 text-emerald-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-white mb-1">{item.title}</h3>
                 <p className="text-sm text-white/50">{item.description}</p>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
         </div>
@@ -374,9 +375,9 @@ export default function RentRightCaseStudy() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-950/5 to-transparent" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -387,14 +388,14 @@ export default function RentRightCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Problems <span className="text-gradient">Solved</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-1 gap-4">
             {challenges.map((item, index) => (
-              <motion.div
+              <SafeInView
                 key={item.challenge}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -414,7 +415,7 @@ export default function RentRightCaseStudy() {
                     <p className="text-white/60 text-sm">{item.solution}</p>
                   </div>
                 </div>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
         </div>
@@ -423,9 +424,9 @@ export default function RentRightCaseStudy() {
       {/* Results Section */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -436,7 +437,7 @@ export default function RentRightCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Key <span className="text-gradient">Outcomes</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
@@ -445,10 +446,10 @@ export default function RentRightCaseStudy() {
               { value: 'SSR', label: 'Fast Loads', description: 'Server-side rendering' },
               { value: '$0', label: 'Beta Cost', description: 'Scalable infrastructure' },
             ].map((item, index) => (
-              <motion.div
+              <SafeInView
                 key={item.label}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -457,7 +458,7 @@ export default function RentRightCaseStudy() {
                 <div className="text-3xl font-bold text-gradient mb-2">{item.value}</div>
                 <div className="text-white font-medium mb-1">{item.label}</div>
                 <div className="text-xs text-white/50">{item.description}</div>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
         </div>
@@ -466,9 +467,9 @@ export default function RentRightCaseStudy() {
       {/* CTA Section */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="glass rounded-3xl p-8 md:p-12 text-center relative overflow-hidden"
           >
@@ -498,7 +499,7 @@ export default function RentRightCaseStudy() {
                 </Link>
               </div>
             </div>
-          </motion.div>
+          </SafeInView>
         </div>
       </section>
 

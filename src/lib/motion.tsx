@@ -2,24 +2,24 @@
  * ============================================
  * SAFARI-SAFE FRAMER MOTION - STARTER KIT
  * ============================================
- * 
+ *
  * Copy this file to: lib/motion.tsx
- * 
+ *
  * Usage:
- * 
+ *
  * // Option 1: Pre-built components
  * import { FadeIn, FadeInUp, ScaleIn } from '@/lib/motion';
  * <FadeInUp>Content</FadeInUp>
  * <FadeInUp delay={0.2}>Delayed content</FadeInUp>
- * 
+ *
  * // Option 2: Hook for custom animations
  * import { useSafeMotion } from '@/lib/motion';
  * const { style, transition } = useSafeMotion();
- * 
+ *
  * // Option 3: Accordion helper
  * import { Collapse } from '@/lib/motion';
  * <Collapse open={isOpen}><p>Content</p></Collapse>
- * 
+ *
  * Author: Highbee's Starter Kit
  * ============================================
  */
@@ -27,7 +27,7 @@
 'use client';
 
 import { ReactNode, useEffect, useState, useRef } from 'react';
-import { motion, Variants, Transition } from 'framer-motion';
+import { motion, Variants, Transition, MotionProps, TargetAndTransition, VariantLabels } from 'framer-motion';
 
 // ===========================================
 // DETECTION (inline to keep this file standalone)
@@ -43,6 +43,12 @@ function isIOS(): boolean {
   if (typeof window === 'undefined') return false;
   return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+export function useIsIOS(): boolean {
+  const [ios, setIos] = useState(false);
+  useEffect(() => { setIos(isIOS()); }, []);
+  return ios;
 }
 
 // ===========================================
@@ -87,32 +93,32 @@ interface UseSafeMotionOptions {
 
 /**
  * Hook that returns Safari-safe motion props
- * 
+ *
  * Usage:
  * const { style, transition } = useSafeMotion({ duration: 0.5 });
  */
 export function useSafeMotion(options: UseSafeMotionOptions = {}) {
   const { duration = 0.4, delay = 0 } = options;
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => setMounted(true), []);
-  
+
   const needsFix = mounted && (isSafari() || isIOS());
-  
+
   // GPU-boost styles
   const style: React.CSSProperties = needsFix ? {
     transform: 'translate3d(0, 0, 0)',
     backfaceVisibility: 'hidden',
     WebkitBackfaceVisibility: 'hidden',
   } : {};
-  
+
   // Slightly faster on Safari
   const transition: Transition = {
     duration: needsFix ? duration * 0.85 : duration,
     delay,
     ease: [0.25, 0.1, 0.25, 1],
   };
-  
+
   return { style, transition, isSafari: needsFix };
 }
 
@@ -135,13 +141,16 @@ interface AnimatedProps {
 /** Simple fade in */
 export function FadeIn({ children, delay = 0, duration = 0.4, once = true, className }: AnimatedProps) {
   const { style, transition } = useSafeMotion({ duration, delay });
-  
+  const ios = useIsIOS();
+
   return (
     <motion.div
       variants={variants.fadeIn}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once, margin: '-50px' }}
+      {...(ios
+        ? { animate: 'visible' }
+        : { whileInView: 'visible', viewport: { once, margin: '0px' } }
+      )}
       transition={transition}
       style={style}
       className={className}
@@ -154,13 +163,16 @@ export function FadeIn({ children, delay = 0, duration = 0.4, once = true, class
 /** Fade in from bottom (most common) */
 export function FadeInUp({ children, delay = 0, duration = 0.4, once = true, className }: AnimatedProps) {
   const { style, transition } = useSafeMotion({ duration, delay });
-  
+  const ios = useIsIOS();
+
   return (
     <motion.div
       variants={variants.fadeInUp}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once, margin: '-50px' }}
+      {...(ios
+        ? { animate: 'visible' }
+        : { whileInView: 'visible', viewport: { once, margin: '0px' } }
+      )}
       transition={transition}
       style={style}
       className={className}
@@ -173,13 +185,16 @@ export function FadeInUp({ children, delay = 0, duration = 0.4, once = true, cla
 /** Fade in from top */
 export function FadeInDown({ children, delay = 0, duration = 0.4, once = true, className }: AnimatedProps) {
   const { style, transition } = useSafeMotion({ duration, delay });
-  
+  const ios = useIsIOS();
+
   return (
     <motion.div
       variants={variants.fadeInDown}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once, margin: '-50px' }}
+      {...(ios
+        ? { animate: 'visible' }
+        : { whileInView: 'visible', viewport: { once, margin: '0px' } }
+      )}
       transition={transition}
       style={style}
       className={className}
@@ -192,13 +207,16 @@ export function FadeInDown({ children, delay = 0, duration = 0.4, once = true, c
 /** Fade in from left */
 export function FadeInLeft({ children, delay = 0, duration = 0.4, once = true, className }: AnimatedProps) {
   const { style, transition } = useSafeMotion({ duration, delay });
-  
+  const ios = useIsIOS();
+
   return (
     <motion.div
       variants={variants.fadeInLeft}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once, margin: '-50px' }}
+      {...(ios
+        ? { animate: 'visible' }
+        : { whileInView: 'visible', viewport: { once, margin: '0px' } }
+      )}
       transition={transition}
       style={style}
       className={className}
@@ -211,13 +229,16 @@ export function FadeInLeft({ children, delay = 0, duration = 0.4, once = true, c
 /** Fade in from right */
 export function FadeInRight({ children, delay = 0, duration = 0.4, once = true, className }: AnimatedProps) {
   const { style, transition } = useSafeMotion({ duration, delay });
-  
+  const ios = useIsIOS();
+
   return (
     <motion.div
       variants={variants.fadeInRight}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once, margin: '-50px' }}
+      {...(ios
+        ? { animate: 'visible' }
+        : { whileInView: 'visible', viewport: { once, margin: '0px' } }
+      )}
       transition={transition}
       style={style}
       className={className}
@@ -230,13 +251,16 @@ export function FadeInRight({ children, delay = 0, duration = 0.4, once = true, 
 /** Scale in (zoom effect) */
 export function ScaleIn({ children, delay = 0, duration = 0.4, once = true, className }: AnimatedProps) {
   const { style, transition } = useSafeMotion({ duration, delay });
-  
+  const ios = useIsIOS();
+
   return (
     <motion.div
       variants={variants.scaleIn}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once, margin: '-50px' }}
+      {...(ios
+        ? { animate: 'visible' }
+        : { whileInView: 'visible', viewport: { once, margin: '0px' } }
+      )}
       transition={transition}
       style={style}
       className={className}
@@ -258,7 +282,7 @@ interface StaggerProps {
 
 /**
  * Wrap children to stagger their animations
- * 
+ *
  * Usage:
  * <Stagger staggerDelay={0.1}>
  *   <FadeInUp>Item 1</FadeInUp>
@@ -267,7 +291,8 @@ interface StaggerProps {
  */
 export function Stagger({ children, staggerDelay = 0.1, className }: StaggerProps) {
   const { isSafari: needsFix } = useSafeMotion();
-  
+  const ios = useIsIOS();
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -277,13 +302,102 @@ export function Stagger({ children, staggerDelay = 0.1, className }: StaggerProp
       },
     },
   };
-  
+
   return (
     <motion.div
       variants={containerVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+      {...(ios ? { animate: 'visible' } : { whileInView: 'visible', viewport: { once: true } })}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ===========================================
+// SAFE MOTION DIV (for sections using variants + whileInView)
+// ===========================================
+
+interface SafeMotionDivProps {
+  variants: Variants;
+  initial?: string;
+  viewport?: { once?: boolean; margin?: string };
+  className?: string;
+  children: ReactNode;
+}
+
+/**
+ * iOS-safe wrapper that bypasses whileInView on iOS (where IntersectionObserver
+ * callbacks are paused during momentum scroll, causing blank sections).
+ * On iOS: always visible. On other platforms: scroll-triggered as normal.
+ */
+export function SafeMotionDiv({
+  variants,
+  initial = 'hidden',
+  viewport = { once: true, margin: '0px' },
+  className,
+  children,
+}: SafeMotionDivProps) {
+  const ios = useIsIOS();
+  return (
+    <motion.div
+      variants={variants}
+      initial={initial}
+      {...(ios ? { animate: 'visible' } : { whileInView: 'visible', viewport })}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ===========================================
+// SAFE IN VIEW (for inline whileInView objects)
+// ===========================================
+
+interface SafeInViewProps {
+  initial?: MotionProps['initial'];
+  animate?: TargetAndTransition | VariantLabels;
+  viewport?: { once?: boolean; margin?: string };
+  transition?: MotionProps['transition'];
+  whileHover?: MotionProps['whileHover'];
+  whileTap?: MotionProps['whileTap'];
+  className?: string;
+  children: ReactNode;
+}
+
+/**
+ * iOS-safe replacement for motion.div with inline whileInView.
+ *
+ * Usage:
+ * // Before:
+ * <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+ *
+ * // After:
+ * <SafeInView initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+ */
+export function SafeInView({
+  initial,
+  animate,
+  viewport,
+  transition,
+  whileHover,
+  whileTap,
+  className,
+  children,
+}: SafeInViewProps) {
+  const ios = useIsIOS();
+  return (
+    <motion.div
+      initial={initial}
+      {...(ios
+        ? { animate }
+        : { whileInView: animate, viewport: viewport ?? { once: true, margin: '0px' } }
+      )}
+      transition={transition}
+      whileHover={whileHover}
+      whileTap={whileTap}
       className={className}
     >
       {children}
@@ -303,7 +417,7 @@ interface CollapseProps {
 
 /**
  * Safari-safe collapse animation
- * 
+ *
  * Usage:
  * const [isOpen, setIsOpen] = useState(false);
  * <button onClick={() => setIsOpen(!isOpen)}>Toggle</button>
@@ -314,14 +428,14 @@ interface CollapseProps {
 export function Collapse({ open, children, className }: CollapseProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { isSafari: needsFix } = useSafeMotion();
-  
+
   const safariStyles: React.CSSProperties = needsFix ? {
     transform: 'translate3d(0, 0, 0)',
     backfaceVisibility: 'hidden',
     WebkitBackfaceVisibility: 'hidden',
     willChange: 'height, opacity',
   } : {};
-  
+
   return (
     <motion.div
       initial={false}
@@ -355,8 +469,11 @@ export default {
   ScaleIn,
   Stagger,
   Collapse,
+  SafeMotionDiv,
+  SafeInView,
   // Hook
   useSafeMotion,
+  useIsIOS,
   // Variants (for custom use)
   variants,
 };

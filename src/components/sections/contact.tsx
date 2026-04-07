@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Calendar, Mail, Clock, CheckCircle, Loader2 } from 'lucide-react'
+import { SafeMotionDiv } from '@/lib/motion'
 
 const projectTypes = [
   { value: 'ai-integration', label: 'AI Integration' },
@@ -90,11 +91,9 @@ export function Contact() {
       <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] rounded-full bg-slate-500/10 blur-[150px]" />
       <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-slate-500/10 blur-[120px]" />
 
-      <motion.div
+      <SafeMotionDiv
         variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
+        viewport={{ once: true, margin: '0px' }}
         className="relative z-10 max-w-6xl mx-auto"
       >
         {/* Section header */}
@@ -325,7 +324,7 @@ export function Contact() {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </SafeMotionDiv>
     </section>
   )
 }

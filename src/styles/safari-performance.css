@@ -127,6 +127,22 @@ html.is-ios .ios-faster {
 }
 
 /* ===========================================
+   DISABLE HEAVY INFINITE ANIMATIONS ON iOS
+   Frees GPU compositing budget for rendering
+   =========================================== */
+html.is-ios .animate-spin-slow {
+  animation: none;
+}
+html.is-ios .animate-pulse-ring {
+  animation: none;
+  opacity: 0.6;
+}
+html.is-ios .animate-gradient-shift {
+  animation: none;
+  background-position: 0% 50%;
+}
+
+/* ===========================================
    REDUCED MOTION (Accessibility - all browsers)
    =========================================== */
 @media (prefers-reduced-motion: reduce) {

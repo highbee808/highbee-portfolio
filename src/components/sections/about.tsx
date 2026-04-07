@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { MapPin, BadgeCheck } from 'lucide-react'
+import { SafeMotionDiv } from '@/lib/motion'
 
 const techStack = [
   { name: 'Next.js', icon: 'devicon-nextjs-plain' },
@@ -64,11 +65,9 @@ export function About() {
       <div className="absolute top-1/4 left-0 w-[500px] h-[500px] rounded-full bg-red-600/10 blur-[150px]" />
       <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] rounded-full bg-zinc-500/10 blur-[120px]" />
 
-      <motion.div
+      <SafeMotionDiv
         variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
+        viewport={{ once: true, margin: '0px' }}
         className="relative z-10 max-w-6xl mx-auto"
       >
         {/* Section Header */}
@@ -263,7 +262,7 @@ export function About() {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </SafeMotionDiv>
     </section>
   )
 }

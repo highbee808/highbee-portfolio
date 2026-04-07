@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Calendar, Clock, ArrowUpRight, BookOpen } from 'lucide-react'
+import { SafeMotionDiv } from '@/lib/motion'
 import type { BlogPost } from '@/lib/blog-store'
 
 interface BlogProps {
@@ -53,11 +54,9 @@ export function Blog({ posts }: BlogProps) {
       <div className="absolute top-0 right-[-20%] w-[600px] h-[600px] rounded-full bg-red-600/10 blur-[150px]" />
       <div className="absolute bottom-[-30%] left-[-15%] w-[500px] h-[500px] rounded-full bg-blue-600/[0.06] blur-[150px]" />
 
-      <motion.div
+      <SafeMotionDiv
         variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
+        viewport={{ once: true, margin: '0px' }}
         className="relative z-10 max-w-6xl mx-auto"
       >
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
@@ -191,7 +190,7 @@ export function Blog({ posts }: BlogProps) {
             </Link>
           </motion.div>
         </div>
-      </motion.div>
+      </SafeMotionDiv>
     </section>
   )
 }

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ExternalLink, ArrowRight, Database, Bot, Layers, Zap, Home, ThumbsUp, FolderOpen, ScrollText } from 'lucide-react'
+import { SafeMotionDiv } from '@/lib/motion'
 import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const featuredMetrics = [
@@ -65,11 +66,9 @@ export function Projects() {
       <div className="absolute top-[15%] right-[-5%] w-[500px] h-[500px] rounded-full bg-red-600/10 blur-[150px]" />
       <div className="absolute bottom-[10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-zinc-500/[0.08] blur-[150px]" />
 
-      <motion.div
+      <SafeMotionDiv
         variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
+        viewport={{ once: true, margin: '0px' }}
         className="relative z-10 max-w-6xl mx-auto"
       >
         {/* Bento Grid */}
@@ -283,7 +282,7 @@ export function Projects() {
             </Link>
           </motion.div>
         </div>
-      </motion.div>
+      </SafeMotionDiv>
     </section>
   )
 }

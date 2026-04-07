@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Phone, Star } from 'lucide-react'
+import { SafeMotionDiv } from '@/lib/motion'
 import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const testimonials = [
@@ -68,11 +69,9 @@ export function Testimonials() {
       <div className="absolute top-[-10%] left-[-15%] w-[500px] h-[500px] rounded-full bg-red-600/10 blur-[150px]" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[400px] h-[400px] rounded-full bg-zinc-500/[0.06] blur-[150px]" />
 
-      <motion.div
+      <SafeMotionDiv
         variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
+        viewport={{ once: true, margin: '0px' }}
         className="relative z-10 max-w-6xl mx-auto"
       >
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
@@ -205,7 +204,7 @@ export function Testimonials() {
             </Link>
           </motion.div>
         </div>
-      </motion.div>
+      </SafeMotionDiv>
     </section>
   )
 }

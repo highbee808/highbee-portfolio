@@ -21,6 +21,7 @@ import {
   Download,
   Globe,
 } from 'lucide-react'
+import { SafeInView } from '@/lib/motion'
 
 const stats = [
   { icon: FileText, value: '15', label: 'Documents' },
@@ -235,9 +236,9 @@ export default function LaunchKitCaseStudy() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-950/5 to-transparent" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -248,14 +249,14 @@ export default function LaunchKitCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Design <span className="text-gradient">Philosophy</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {designPrinciples.map((principle, index) => (
-              <motion.div
+              <SafeInView
                 key={principle.title}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -266,7 +267,7 @@ export default function LaunchKitCaseStudy() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{principle.title}</h3>
                 <p className="text-sm text-white/50">{principle.description}</p>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
         </div>
@@ -275,9 +276,9 @@ export default function LaunchKitCaseStudy() {
       {/* Features Section */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -288,14 +289,14 @@ export default function LaunchKitCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               Key <span className="text-gradient">Capabilities</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {features.map((feature, index) => (
-              <motion.div
+              <SafeInView
                 key={feature.title}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -306,7 +307,7 @@ export default function LaunchKitCaseStudy() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
                 <p className="text-sm text-white/50">{feature.description}</p>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
         </div>
@@ -317,9 +318,9 @@ export default function LaunchKitCaseStudy() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-950/5 to-transparent" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -333,15 +334,15 @@ export default function LaunchKitCaseStudy() {
             <p className="text-white/50 mt-4 max-w-2xl">
               During testing, I discovered severe performance issues on Safari and iOS—animations stuttered, backdrop-blur flickered, and accordions broke. Here&apos;s how I fixed it.
             </p>
-          </motion.div>
+          </SafeInView>
 
           {/* Problem/Solution Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {safariChallenges.map((challenge, index) => (
-              <motion.div
+              <SafeInView
                 key={challenge.problem}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
@@ -356,14 +357,14 @@ export default function LaunchKitCaseStudy() {
                     <p className="text-sm text-white/50">{challenge.solution}</p>
                   </div>
                 </div>
-              </motion.div>
+              </SafeInView>
             ))}
           </div>
 
           {/* Solution Architecture Card */}
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -4, transition: { duration: 0.3 } }}
             className="glass rounded-3xl p-8 bg-gradient-to-br from-green-600/10 to-transparent"
@@ -386,16 +387,16 @@ export default function LaunchKitCaseStudy() {
                 <p className="text-sm text-white/50 mt-2">Safari-safe Framer Motion wrappers with adjusted timing and GPU hints.</p>
               </div>
             </div>
-          </motion.div>
+          </SafeInView>
         </div>
       </section>
 
       {/* Results Section */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-12"
           >
@@ -406,11 +407,11 @@ export default function LaunchKitCaseStudy() {
             <h2 className="text-4xl font-bold text-white">
               The <span className="text-gradient">Outcome</span>
             </h2>
-          </motion.div>
+          </SafeInView>
 
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -4, transition: { duration: 0.3 } }}
             className="glass rounded-3xl p-8"
@@ -431,16 +432,16 @@ export default function LaunchKitCaseStudy() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </SafeInView>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <motion.div
+          <SafeInView
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="glass rounded-3xl p-8 md:p-12 text-center relative overflow-hidden"
           >
@@ -478,7 +479,7 @@ export default function LaunchKitCaseStudy() {
                 </Link>
               </div>
             </div>
-          </motion.div>
+          </SafeInView>
         </div>
       </section>
 
