@@ -5,6 +5,7 @@ import { StickyHeader } from "@/components/ui/sticky-header";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { SafariInit } from "@/components/SafariInit";
+import { DEFAULT_OG_IMAGE, PERSON_NAME, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -26,19 +27,30 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Highbee | Full-Stack Developer & AI Specialist",
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  title: {
+    default: "Highbee | Full-Stack Developer & AI Integration Specialist",
+    template: `%s | ${SITE_NAME}`,
+  },
   description:
-    "I build AI-powered applications, full-stack web apps, and rapid prototypes. Specializing in Next.js, TypeScript, and Claude AI integration.",
+    "Ibrahim Lawal builds AI-powered products, full-stack web applications, and rapid prototypes with Next.js, TypeScript, Supabase, and Claude AI.",
   keywords: [
-    "full-stack developer",
-    "AI integration",
-    "Next.js",
-    "React",
-    "Claude AI",
-    "web development",
-    "Nigeria",
+    "Ibrahim Lawal",
+    "Highbee",
+    "full-stack developer Nigeria",
+    "AI integration specialist",
+    "Next.js developer",
+    "Claude AI developer",
+    "TypeScript developer",
+    "web application developer",
   ],
-  authors: [{ name: "Ibrahim Lawal" }],
+  authors: [{ name: PERSON_NAME, url: SITE_URL }],
+  creator: PERSON_NAME,
+  publisher: PERSON_NAME,
+  alternates: {
+    canonical: "/",
+  },
   manifest: "/manifest.json",
   icons: {
     icon: "/images/profile-favicon.png",
@@ -50,21 +62,39 @@ export const metadata: Metadata = {
     title: "Highbee",
   },
   openGraph: {
-    title: "Highbee | Full-Stack Developer & AI Specialist",
-    description: "Building the future with AI-powered applications",
-    url: "https://highbee.dev",
-    siteName: "Highbee",
+    title: "Highbee | Full-Stack Developer & AI Integration Specialist",
+    description:
+      "AI integration, full-stack development, and rapid prototyping by Ibrahim Lawal.",
+    url: SITE_URL,
+    siteName: SITE_NAME,
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE,
+        width: 1200,
+        height: 1200,
+        alt: "Ibrahim Lawal, Highbee",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Highbee | Full-Stack Developer",
-    description: "Building AI-powered applications",
+    title: "Highbee | Full-Stack Developer & AI Integration Specialist",
+    description:
+      "AI-powered products, full-stack apps, and rapid prototypes by Ibrahim Lawal.",
+    images: [DEFAULT_OG_IMAGE],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 

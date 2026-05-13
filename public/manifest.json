@@ -1,0 +1,17 @@
+{
+  "name": "Highbee - Ibrahim Lawal",
+  "short_name": "Highbee",
+  "description": "AI integration, full-stack development, and rapid prototyping by Ibrahim Lawal.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    {
+      "src": "/images/profile-favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
