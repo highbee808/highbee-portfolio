@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send, Calendar, Mail, Clock, CheckCircle, Loader2 } from 'lucide-react'
+import { Send, Calendar, Mail, Clock, CheckCircle, Loader2, ExternalLink } from 'lucide-react'
 import { SafeMotionDiv } from '@/lib/motion'
 
 const projectTypes = [
@@ -292,22 +292,44 @@ export function Contact() {
               </div>
             </div>
 
-            {/* Cal.com embed */}
+            {/* Cal.com link card */}
             <div className="glass rounded-2xl p-6 overflow-hidden">
               <h4 className="font-medium text-white mb-4 flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-slate-300" />
                 Schedule a Call
               </h4>
 
-              {/* Calendar embed */}
-              <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
-                <iframe
-                  src="https://cal.com/ibrahim-lawal-wj6g11/30min?embed=true&theme=dark"
-                  width="100%"
-                  height="600"
-                  frameBorder="0"
-                  className="rounded-xl"
-                />
+              <div className="rounded-xl bg-white/5 border border-white/10 p-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-red-600/20 flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-6 h-6 text-red-400" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-white mb-2">30-minute intro call</h5>
+                    <p className="text-sm text-white/55 leading-relaxed">
+                      Pick a time that works for you and we&apos;ll talk through the project,
+                      scope, timeline, and best next step.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-3 gap-3 my-5">
+                  {['Project goals', 'Budget fit', 'Next steps'].map((item) => (
+                    <div key={item} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+                      <span className="text-xs font-medium text-white/65">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href="https://cal.com/ibrahim-lawal-wj6g11/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-600 to-red-700 px-5 py-3 font-medium text-white transition-shadow hover:shadow-lg hover:shadow-red-600/25"
+                >
+                  Book a call
+                  <ExternalLink className="w-4 h-4" />
+                </a>
               </div>
 
               {/* Direct email link */}

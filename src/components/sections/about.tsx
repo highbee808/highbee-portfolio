@@ -161,8 +161,7 @@ export function About() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
-                  className="flex flex-col items-center justify-center p-4 rounded-2xl transition-colors"
+                  className="flex flex-col items-center justify-center p-4 rounded-2xl transition-colors hover:bg-white/[0.05]"
                 >
                   <span className="text-3xl md:text-4xl font-bold text-gradient">{stat.value}</span>
                   <span className="text-xs text-white/30 mt-1 uppercase tracking-wide">{stat.label}</span>
@@ -188,8 +187,8 @@ export function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  whileHover={{ y: -2, backgroundColor: 'rgba(255,255,255,0.05)' }}
-                  className="flex flex-col items-center gap-2 p-3 rounded-xl transition-all cursor-pointer"
+                  whileHover={{ y: -2 }}
+                  className="flex flex-col items-center gap-2 p-3 rounded-xl transition-all cursor-pointer hover:bg-white/[0.05]"
                 >
                   <i className={`${tech.icon} text-2xl text-white/50 hover:text-white transition-colors`} />
                   <span className="text-[10px] text-white/30 font-medium">{tech.name}</span>
@@ -214,8 +213,7 @@ export function About() {
               {currentProjects.map((project) => (
                 <motion.div
                   key={project.name}
-                  whileHover={{ borderColor: 'rgba(220, 38, 38, 0.5)', backgroundColor: 'rgba(220, 38, 38, 0.05)' }}
-                  className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 transition-all cursor-pointer"
+                  className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 transition-all cursor-pointer hover:border-red-500/50 hover:bg-red-600/[0.05]"
                 >
                   <h5 className="font-semibold text-white mb-1">{project.name}</h5>
                   <p className="text-sm text-white/50">{project.description}</p>
@@ -244,12 +242,13 @@ export function About() {
               <div className="flex gap-4">
                 {/* Claude Logo */}
                 <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors">
-                  <Image
-                    src="/images/claude logo PNG.png"
-                    alt="Claude AI"
-                    width={28}
-                    height={28}
-                  />
+                  <svg viewBox="0 0 148.18 148.18" className="w-7 h-7" fill="none" aria-hidden="true">
+                    <path
+                      d="m 105.01,322.07 29.14,-16.35 0.49,-1.42 -0.49,-0.79 h -1.42 l -4.87,-0.3 -16.65,-0.45 -14.44,-0.6 -13.99,-0.75 -3.52,-0.75 -3.3,-4.35 0.34,-2.17 2.96,-1.99 4.24,0.37 9.37,0.64 14.06,0.97 10.2,0.6 15.11,1.57 h 2.4 l 0.34,-0.97 -0.82,-0.6 -0.64,-0.6 -14.55,-9.86 -15.75,-10.42 -8.25,-6 -4.46,-3.04 -2.25,-2.85 -0.97,-6.22 4.05,-4.46 5.44,0.37 1.39,0.37 5.51,4.24 11.77,9.11 15.37,11.32 2.25,1.87 0.9,-0.64 0.11,-0.45 -1.01,-1.69 -8.36,-15.11 -8.92,-15.37 -3.97,-6.37 -1.05,-3.82 c -0.37,-1.57 -0.64,-2.89 -0.64,-4.5 l 4.61,-6.26 2.55,-0.82 6.15,0.82 2.59,2.25 3.82,8.74 6.19,13.76 9.6,18.71 2.81,5.55 1.5,5.14 0.56,1.57 h 0.97 v -0.9 l 0.79,-10.54 1.46,-12.94 1.42,-16.65 0.49,-4.69 2.32,-5.62 4.61,-3.04 3.6,1.72 2.96,4.24 -0.41,2.74 -1.76,11.44 -3.45,17.92 -2.25,12 h 1.31 l 1.5,-1.5 6.07,-8.06 10.2,-12.75 4.5,-5.06 5.25,-5.59 3.37,-2.66 h 6.37 l 4.69,6.97 -2.1,7.2 -6.56,8.32 -5.44,7.05 -7.8,10.5 -4.87,8.4 0.45,0.67 1.16,-0.11 17.62,-3.75 9.52,-1.72 11.36,-1.95 5.14,2.4 0.56,2.44 -2.02,4.99 -12.15,3 -14.25,2.85 -21.22,5.02 -0.26,0.19 0.3,0.37 9.56,0.9 4.09,0.22 h 10.01 l 18.64,1.39 4.87,3.22 2.92,3.94 -0.49,3 -7.5,3.82 -10.12,-2.4 -23.62,-5.62 -8.1,-2.02 h -1.12 v 0.67 l 6.75,6.6 12.37,11.17 15.49,14.4 0.79,3.56 -1.99,2.81 -2.1,-0.3 -13.61,-10.24 -5.25,-4.61 -11.89,-10.01 h -0.79 v 1.05 l 2.74,4.01 14.47,21.75 0.75,6.67 -1.05,2.17 -3.75,1.31 -4.12,-0.75 -8.47,-11.89 -8.74,-13.39 -7.05,-12 -0.86,0.49 -4.16,44.81 -1.95,2.29 -4.5,1.72 -3.75,-2.85 -1.99,-4.61 1.99,-9.11 2.4,-11.89 1.95,-9.45 1.76,-11.74 1.05,-3.9 -0.07,-0.26 -0.86,0.11 -8.85,12.15 -13.46,18.19 -10.65,11.4 -2.55,1.01 -4.42,-2.29 0.41,-4.09 2.47,-3.64 14.74,-18.75 8.89,-11.62 5.74,-6.71 -0.04,-0.97 h -0.34 l -39.15,25.42 -6.97,0.9 -3,-2.81 0.37,-4.61 1.42,-1.5 11.77,-8.1 -0.04,0.04 z"
+                      fill="#D97757"
+                      transform="translate(-75.96,-223.53)"
+                    />
+                  </svg>
                   <span className="text-sm font-medium text-white/70">Claude</span>
                 </div>
                 {/* ChatGPT Logo */}

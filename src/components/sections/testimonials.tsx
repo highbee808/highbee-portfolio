@@ -135,8 +135,7 @@ export function Testimonials() {
               {stats.map((stat) => (
                 <motion.div
                   key={stat.label}
-                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
-                  className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/[0.02] transition-colors text-center"
+                  className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/[0.02] transition-colors text-center hover:bg-white/[0.05]"
                 >
                   {stat.hasStars && (
                     <div className="flex gap-0.5 mb-1">

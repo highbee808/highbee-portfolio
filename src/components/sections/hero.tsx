@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { ParticleBackground } from '@/components/animations/particle-background'
@@ -40,6 +41,17 @@ const floatingElements = [
 ]
 
 export function Hero() {
+  const [useLightEffects, setUseLightEffects] = useState(false)
+
+  useEffect(() => {
+    const ua = window.navigator.userAgent
+    const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|Edg/.test(ua)
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    setUseLightEffects(isSafari || isTouch || reduceMotion)
+  }, [])
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -53,7 +65,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-[#0a0a0f]" />
 
       {/* Static gradient orbs - no animation for better performance */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="performance-orbs absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-red-900/20 blur-[80px]" />
         <div className="absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] rounded-full bg-zinc-700/20 blur-[80px]" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-red-600/10 blur-[60px]" />
@@ -137,10 +149,10 @@ export function Hero() {
               backgroundImage: 'linear-gradient(90deg, #ffffff 0%, #a1a1aa 25%, #ffffff 50%, #a1a1aa 75%, #ffffff 100%)',
               backgroundSize: '200% 100%',
             }}
-            animate={{
+            animate={useLightEffects ? undefined : {
               backgroundPosition: ['0% 0%', '-100% 0%'],
             }}
-            transition={{
+            transition={useLightEffects ? undefined : {
               duration: 3,
               repeat: Infinity,
               ease: 'linear',
@@ -154,14 +166,14 @@ export function Hero() {
           <span className="relative inline-block">
             <motion.span
               className="text-white"
-              animate={{
+              animate={useLightEffects ? undefined : {
                 textShadow: [
                   '0 0 20px rgba(220, 38, 38, 0)',
                   '0 0 20px rgba(220, 38, 38, 0.3)',
                   '0 0 20px rgba(220, 38, 38, 0)',
                 ],
               }}
-              transition={{ duration: 3, repeat: Infinity }}
+              transition={useLightEffects ? undefined : { duration: 3, repeat: Infinity }}
             >
               Solve
             </motion.span>
@@ -264,17 +276,17 @@ export function Hero() {
             {/* Animated background gradient */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-red-500 via-red-600 to-red-700"
-              animate={{
+              animate={useLightEffects ? undefined : {
                 backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
               }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+              transition={useLightEffects ? undefined : { duration: 5, repeat: Infinity, ease: 'linear' }}
               style={{ backgroundSize: '200% 200%' }}
             />
             <span className="relative z-10 flex items-center gap-2">
               See My Work
               <motion.span
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
+                animate={useLightEffects ? undefined : { x: [0, 5, 0] }}
+                transition={useLightEffects ? undefined : { duration: 1.2, repeat: Infinity }}
               >
                 →
               </motion.span>
@@ -284,12 +296,10 @@ export function Hero() {
           <motion.button
             whileHover={{
               scale: 1.03,
-              borderColor: 'rgba(220, 38, 38, 0.5)',
-              backgroundColor: 'rgba(220, 38, 38, 0.1)',
             }}
             whileTap={{ scale: 0.97 }}
             onClick={() => scrollToSection('contact')}
-            className="px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-white text-sm sm:text-base border border-white/20 bg-white/5 backdrop-blur-sm blur-fix transition-all duration-300"
+            className="px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-white text-sm sm:text-base border border-white/20 bg-white/5 backdrop-blur-sm blur-fix transition-all duration-300 hover:border-red-500/50 hover:bg-red-600/10"
           >
             Let&apos;s Talk
           </motion.button>
@@ -338,7 +348,7 @@ export function Hero() {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.5, duration: 0.5 }}
-        className="fixed bottom-24 right-6 z-50 hidden md:block"
+        className="safari-hide fixed bottom-24 right-6 z-50 hidden md:block"
       >
         <div className="flex items-center gap-3 px-4 py-3 rounded-2xl glass border border-white/10 cursor-pointer group hover:border-red-500/30 transition-all duration-300">
           <div className="relative">

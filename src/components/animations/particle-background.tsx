@@ -26,20 +26,22 @@ export function ParticleBackground() {
   const particlesRef = useRef<Particle[]>([])
   const mouseRef = useRef({ x: 0, y: 0 })
   const animationRef = useRef<number | null>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const [canRenderParticles, setCanRenderParticles] = useState(false)
   const [isSafariLike, setIsSafariLike] = useState(false)
 
-  // Detect mobile on mount
+  // Safari and touch devices struggle with a constantly repainting hero canvas.
   useEffect(() => {
     const checkMobile = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches
     const ua = window.navigator.userAgent
-    setIsMobile(checkMobile)
-    setIsSafariLike(/Safari/.test(ua) && !/Chrome|CriOS|FxiOS|Edg/.test(ua))
+    const checkSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|Edg/.test(ua)
+
+    setIsSafariLike(checkSafari)
+    setCanRenderParticles(!checkMobile && !checkSafari)
   }, [])
 
   const createParticles = useCallback((width: number, height: number) => {
     // Reduced particles for better performance
-    const divisor = isMobile || isSafariLike ? 65000 : 25000
+    const divisor = isSafariLike ? 65000 : 30000
     const particleCount = Math.max(12, Math.floor((width * height) / divisor))
     const particles: Particle[] = []
 
@@ -58,7 +60,7 @@ export function ParticleBackground() {
     }
 
     return particles
-  }, [isMobile, isSafariLike])
+  }, [isSafariLike])
 
   const drawParticle = useCallback(
     (ctx: CanvasRenderingContext2D, particle: Particle, time: number) => {
@@ -177,6 +179,8 @@ export function ParticleBackground() {
   )
 
   useEffect(() => {
+    if (!canRenderParticles) return
+
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -225,7 +229,9 @@ export function ParticleBackground() {
       canvas.removeEventListener('mousemove', handleMouseMove)
       canvas.removeEventListener('mouseleave', handleMouseLeave)
     }
-  }, [createParticles, animate])
+  }, [canRenderParticles, createParticles, animate])
+
+  if (!canRenderParticles) return null
 
   return (
     <canvas

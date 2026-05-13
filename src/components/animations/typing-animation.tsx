@@ -18,12 +18,22 @@ export function TypingAnimation({
   pauseDuration = 2000,
   className = '',
 }: TypingAnimationProps) {
+  const [useStaticText, setUseStaticText] = useState(false)
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0)
   const [currentText, setCurrentText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
 
   const currentPhrase = phrases[currentPhraseIndex]
+
+  useEffect(() => {
+    const ua = window.navigator.userAgent
+    const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|Edg/.test(ua)
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    setUseStaticText(isSafari || isTouch || reduceMotion)
+  }, [])
 
   const handleTyping = useCallback(() => {
     if (isPaused) return
@@ -53,10 +63,12 @@ export function TypingAnimation({
   }, [currentText, currentPhrase, isDeleting, isPaused, pauseDuration, phrases.length])
 
   useEffect(() => {
+    if (useStaticText) return
+
     const speed = isDeleting ? deletingSpeed : typingSpeed
     const timeout = setTimeout(handleTyping, speed)
     return () => clearTimeout(timeout)
-  }, [handleTyping, isDeleting, deletingSpeed, typingSpeed])
+  }, [handleTyping, isDeleting, deletingSpeed, typingSpeed, useStaticText])
 
   // Get color based on current phrase
   const getColor = () => {
@@ -66,6 +78,16 @@ export function TypingAnimation({
       'from-red-400 to-red-600',     // Rapid Prototyping
     ]
     return colors[currentPhraseIndex % colors.length]
+  }
+
+  if (useStaticText) {
+    return (
+      <span className={`inline-flex items-center ${className}`}>
+        <span className="bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent font-semibold">
+          {phrases[0]}
+        </span>
+      </span>
+    )
   }
 
   return (
