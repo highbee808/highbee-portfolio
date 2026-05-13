@@ -105,6 +105,7 @@ export function About() {
                     src="/images/profile-cartoon.png"
                     alt="Ibrahim Lawal"
                     fill
+                    sizes="96px"
                     className="object-cover"
                   />
                 </div>

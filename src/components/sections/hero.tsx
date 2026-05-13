@@ -20,11 +20,10 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: {
       duration: 0.7,
       ease: [0.22, 1, 0.36, 1] as const,
@@ -216,6 +215,7 @@ export function Hero() {
                 src="/images/profile-cartoon.png"
                 alt="Ibrahim Lawal"
                 fill
+                sizes="28px"
                 className="object-cover"
               />
             </div>

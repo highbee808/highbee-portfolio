@@ -18,17 +18,15 @@
    CORE: GPU ACCELERATION (Safari/iOS only)
    =========================================== */
 html.is-safari .gpu-boost,
-html.is-ios .gpu-boost {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+html.is-ios .gpu-boost,
+html.is-safari .safari-composited,
+html.is-ios .safari-composited {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
 html.is-safari .gpu-boost-heavy,
 html.is-ios .gpu-boost-heavy {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: transform, opacity;
@@ -39,8 +37,6 @@ html.is-ios .gpu-boost-heavy {
    =========================================== */
 html.is-safari .blur-fix,
 html.is-ios .blur-fix {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   isolation: isolate;
@@ -63,8 +59,6 @@ html.is-ios .backdrop-blur-xl,
 html.is-ios .backdrop-blur-2xl,
 html.is-ios .backdrop-blur-3xl,
 html.is-ios [class*="backdrop-blur"] {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
   isolation: isolate;
 }
 

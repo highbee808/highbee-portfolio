@@ -201,8 +201,7 @@ export function Projects() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
-                  className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/[0.02] transition-colors"
+                  className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/[0.02] transition-colors hover:bg-white/[0.05]"
                 >
                   <metric.icon className="w-8 h-8 text-red-500 mb-2" />
                   <span className="text-2xl font-bold text-white">{metric.value}</span>

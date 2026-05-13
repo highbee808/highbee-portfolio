@@ -48,8 +48,9 @@ export function isIOS(): boolean {
 
 /** Apply GPU acceleration to an element */
 export function gpuBoost(el: HTMLElement): void {
-  el.style.transform = 'translate3d(0, 0, 0)';
+  el.classList.add('safari-composited');
   el.style.backfaceVisibility = 'hidden';
+  el.style.setProperty('-webkit-backface-visibility', 'hidden');
 }
 
 /** Fix all blur elements on the page */
@@ -57,7 +58,7 @@ function fixBlurElements(): void {
   document.querySelectorAll<HTMLElement>(
     '[class*="backdrop-blur"], [style*="backdrop-filter"]'
   ).forEach(el => {
-    el.style.transform = 'translate3d(0, 0, 0)';
+    el.classList.add('safari-composited');
     el.style.isolation = 'isolate';
   });
 }
@@ -65,7 +66,7 @@ function fixBlurElements(): void {
 /** Fix all animated elements */
 function fixAnimatedElements(): void {
   document.querySelectorAll<HTMLElement>(
-    '[style*="transform"], [style*="opacity"], .gpu-boost'
+    '.gpu-boost, .gpu-boost-heavy'
   ).forEach(gpuBoost);
 }
 
@@ -85,12 +86,10 @@ export function initSafari(): void {
   // Add detection classes to <html>
   if (isSafari()) {
     html.classList.add('is-safari');
-    console.log('✓ Safari detected');
   }
 
   if (isIOS()) {
     html.classList.add('is-ios');
-    console.log('✓ iOS detected');
   }
 
   // Only apply fixes on Safari/iOS
@@ -108,28 +107,28 @@ export function initSafari(): void {
       mutation.addedNodes.forEach(node => {
         if (!(node instanceof HTMLElement)) return;
         
-        const style = node.getAttribute('style') || '';
-        const className = node.className || '';
-
-        // Fix blur elements
-        if (style.includes('backdrop-filter') || className.includes('backdrop-blur')) {
-          node.style.transform = 'translate3d(0, 0, 0)';
+        if (node.matches('[class*="backdrop-blur"], [style*="backdrop-filter"]')) {
+          node.classList.add('safari-composited');
           node.style.isolation = 'isolate';
         }
 
-        // Fix animated elements
-        if (style.includes('transform') || style.includes('opacity')) {
+        if (node.matches('.gpu-boost, .gpu-boost-heavy')) {
           gpuBoost(node);
         }
+
+        node.querySelectorAll<HTMLElement>('[class*="backdrop-blur"], [style*="backdrop-filter"]').forEach(el => {
+          el.classList.add('safari-composited');
+          el.style.isolation = 'isolate';
+        });
+
+        node.querySelectorAll<HTMLElement>('.gpu-boost, .gpu-boost-heavy').forEach(gpuBoost);
       });
     });
   });
 
   observer.observe(document.body, {
     childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['style', 'class']
+    subtree: true
   });
 }
 

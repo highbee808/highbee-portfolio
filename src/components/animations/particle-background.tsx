@@ -27,17 +27,20 @@ export function ParticleBackground() {
   const mouseRef = useRef({ x: 0, y: 0 })
   const animationRef = useRef<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [isSafariLike, setIsSafariLike] = useState(false)
 
   // Detect mobile on mount
   useEffect(() => {
-    const checkMobile = window.innerWidth < 768
+    const checkMobile = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches
+    const ua = window.navigator.userAgent
     setIsMobile(checkMobile)
+    setIsSafariLike(/Safari/.test(ua) && !/Chrome|CriOS|FxiOS|Edg/.test(ua))
   }, [])
 
   const createParticles = useCallback((width: number, height: number) => {
     // Reduced particles for better performance
-    const divisor = isMobile ? 50000 : 25000
-    const particleCount = Math.floor((width * height) / divisor)
+    const divisor = isMobile || isSafariLike ? 65000 : 25000
+    const particleCount = Math.max(12, Math.floor((width * height) / divisor))
     const particles: Particle[] = []
 
     for (let i = 0; i < particleCount; i++) {
@@ -55,7 +58,7 @@ export function ParticleBackground() {
     }
 
     return particles
-  }, [isMobile])
+  }, [isMobile, isSafariLike])
 
   const drawParticle = useCallback(
     (ctx: CanvasRenderingContext2D, particle: Particle, time: number) => {
@@ -186,7 +189,7 @@ export function ParticleBackground() {
 
       canvas.width = rect.width * dpr
       canvas.height = rect.height * dpr
-      ctx.scale(dpr, dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
       canvas.style.width = `${rect.width}px`
       canvas.style.height = `${rect.height}px`
@@ -207,7 +210,8 @@ export function ParticleBackground() {
     }
 
     handleResize()
-    animate(ctx, canvas.offsetWidth, canvas.offsetHeight)
+    const { width, height } = canvas.getBoundingClientRect()
+    animate(ctx, width, height)
 
     window.addEventListener('resize', handleResize)
     canvas.addEventListener('mousemove', handleMouseMove)
@@ -226,7 +230,7 @@ export function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-auto gpu-boost particle-canvas"
+      className="absolute inset-0 w-full h-full pointer-events-none gpu-boost particle-canvas"
     />
   )
 }

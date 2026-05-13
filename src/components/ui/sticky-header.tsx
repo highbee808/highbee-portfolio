@@ -71,6 +71,7 @@ export function StickyHeader() {
     <AnimatePresence>
       {isVisible && (
         <motion.header
+          key="sticky-header"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
@@ -100,6 +101,7 @@ export function StickyHeader() {
                     src="/images/profile-cartoon.png"
                     alt="Ibrahim Lawal"
                     fill
+                    sizes="40px"
                     className="object-cover"
                   />
                 </div>
@@ -182,6 +184,7 @@ export function StickyHeader() {
       {/* Full-screen mobile menu overlay */}
       {isMenuOpen && (
         <motion.div
+          key="mobile-menu"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
