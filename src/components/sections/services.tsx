@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { Bot, Code, Rocket, ArrowRight, Check, MessageSquare, ShieldCheck } from 'lucide-react'
 import { SafeMotionDiv } from '@/lib/motion'
 import { ShimmerText } from '@/components/ui/shimmer-text'
@@ -16,6 +17,8 @@ const services = [
       'Custom chatbots & assistants',
       'Workflow automation',
     ],
+    href: '/services/ai-integration',
+    secondaryHref: '/services/claude-ai-integration',
     popular: false,
   },
   {
@@ -31,6 +34,7 @@ const services = [
       'Cloud deployment',
       'Ongoing support available',
     ],
+    href: '/services/nextjs-developer-nigeria',
     popular: true,
   },
   {
@@ -43,6 +47,7 @@ const services = [
       'Full design & development',
       'Scalable architecture',
     ],
+    href: '/services/mvp-development',
     popular: false,
   },
 ]
@@ -165,6 +170,19 @@ export function Services() {
               Get Started
               <ArrowRight className="w-4 h-4" />
             </motion.button>
+            <Link
+              href={services[0].href}
+              className="mt-3 inline-flex items-center justify-center gap-2 text-sm font-medium text-red-400 hover:text-red-300"
+            >
+              Learn more
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link
+              href="/services/claude-ai-integration"
+              className="mt-2 inline-flex items-center justify-center text-xs font-medium text-white/40 hover:text-white/70"
+            >
+              Need Claude AI specifically?
+            </Link>
           </motion.div>
 
           {/* Full-Stack Development Card (Featured) */}
@@ -204,6 +222,13 @@ export function Services() {
               Get Started
               <ArrowRight className="w-4 h-4" />
             </motion.button>
+            <Link
+              href={services[1].href}
+              className="mt-3 inline-flex items-center justify-center gap-2 text-sm font-medium text-red-400 hover:text-red-300"
+            >
+              Learn more
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </motion.div>
 
           {/* Rapid Prototyping Card */}
@@ -238,6 +263,13 @@ export function Services() {
               Get Started
               <ArrowRight className="w-4 h-4" />
             </motion.button>
+            <Link
+              href={services[2].href}
+              className="mt-3 inline-flex items-center justify-center gap-2 text-sm font-medium text-red-400 hover:text-red-300"
+            >
+              Learn more
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </motion.div>
 
           {/* CTA Card */}

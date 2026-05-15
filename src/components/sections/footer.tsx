@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Twitter } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const socialLinks = [
   {
@@ -26,10 +27,17 @@ const socialLinks = [
 ]
 
 const navLinks = [
-  { name: 'About', href: '#about' },
-  { name: 'Services', href: '#services' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'About', href: '/#about' },
+  { name: 'Services', href: '/services' },
+  { name: 'Projects', href: '/#projects' },
+  { name: 'Contact', href: '/#contact' },
+]
+
+const serviceLinks = [
+  { name: 'AI Integration', href: '/services/ai-integration' },
+  { name: 'Claude AI Integration', href: '/services/claude-ai-integration' },
+  { name: 'Next.js Developer Nigeria', href: '/services/nextjs-developer-nigeria' },
+  { name: 'MVP Development', href: '/services/mvp-development' },
 ]
 
 export function Footer() {
@@ -91,12 +99,27 @@ export function Footer() {
             <ul className="space-y-3">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-white/50 hover:text-white transition-colors text-sm"
                   >
                     {link.name}
-                  </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <h4 className="mt-8 text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
+              Service Pages
+            </h4>
+            <ul className="space-y-3">
+              {serviceLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-white/50 hover:text-white transition-colors text-sm"
+                  >
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>

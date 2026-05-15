@@ -1,10 +1,12 @@
 import type { MetadataRoute } from 'next'
 import { getPublishedPosts } from '@/lib/blog-store'
+import { servicePages } from '@/lib/service-pages'
 import { SITE_URL } from '@/lib/seo'
 
 const staticRoutes = [
   { path: '/', priority: 1, changeFrequency: 'weekly' },
   { path: '/projects', priority: 0.9, changeFrequency: 'monthly' },
+  { path: '/services', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/blog', priority: 0.8, changeFrequency: 'weekly' },
   { path: '/resume', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/projects/taskrite', priority: 0.8, changeFrequency: 'monthly' },
@@ -25,6 +27,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: route.changeFrequency,
       priority: route.priority,
+    })),
+    ...servicePages.map((service) => ({
+      url: `${SITE_URL}/services/${service.slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.85,
     })),
     ...posts.map((post) => ({
       url: `${SITE_URL}/blog/${post.slug}`,
