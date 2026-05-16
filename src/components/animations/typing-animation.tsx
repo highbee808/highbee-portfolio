@@ -67,20 +67,10 @@ export function TypingAnimation({
     return () => clearTimeout(timeout)
   }, [handleTyping, isDeleting, deletingSpeed, typingSpeed, useStaticText])
 
-  // Get color based on current phrase
-  const getColor = () => {
-    const colors = [
-      'from-slate-300 to-slate-500', // AI Integration
-      'from-slate-300 to-slate-500',     // Full-Stack Apps
-      'from-red-400 to-red-600',     // Rapid Prototyping
-    ]
-    return colors[currentPhraseIndex % colors.length]
-  }
-
   if (useStaticText) {
     return (
       <span className={`inline-flex items-center ${className}`}>
-        <span className="bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent font-semibold">
+        <span className="text-red-500 font-semibold">
           {phrases[0]}
         </span>
       </span>
@@ -94,7 +84,7 @@ export function TypingAnimation({
           key={currentPhraseIndex}
           initial={{ opacity: 0.8 }}
           animate={{ opacity: 1 }}
-          className={`bg-gradient-to-r ${getColor()} bg-clip-text text-transparent font-semibold`}
+          className="text-red-500 font-semibold"
         >
           {currentText}
         </motion.span>

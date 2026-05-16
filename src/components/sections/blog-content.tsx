@@ -41,7 +41,7 @@ export function BlogContent({ posts }: BlogContentProps) {
   // No posts available
   if (posts.length === 0) {
     return (
-      <section id="blog" className="relative py-24 px-6 overflow-hidden">
+      <section id="blog" className="relative py-16 md:py-24 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-[#0a0a0f]" />
         <div className="relative z-10 max-w-6xl mx-auto text-center">
           <h2 className="font-serif text-4xl text-white mb-4">Coming Soon</h2>
@@ -61,7 +61,7 @@ export function BlogContent({ posts }: BlogContentProps) {
   }
 
   return (
-    <section id="blog" className="relative py-24 px-6 overflow-hidden">
+    <section id="blog" className="relative py-16 md:py-24 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[#0a0a0f]" />
 

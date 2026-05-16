@@ -1,7 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Twitter } from 'lucide-react'
+import { ChevronDown, Github, Linkedin, Twitter } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -28,7 +29,6 @@ const socialLinks = [
 
 const navLinks = [
   { name: 'About', href: '/#about' },
-  { name: 'Services', href: '/services' },
   { name: 'Projects', href: '/#projects' },
   { name: 'Contact', href: '/#contact' },
 ]
@@ -42,9 +42,10 @@ const serviceLinks = [
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
+  const [servicesOpen, setServicesOpen] = useState(false)
 
   return (
-    <footer className="relative py-16 px-6 overflow-hidden">
+    <footer className="relative py-12 md:py-16 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[#0a0a0f]" />
 
@@ -97,22 +98,45 @@ export function Footer() {
               Navigation
             </h4>
             <ul className="space-y-3">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setServicesOpen((open) => !open)}
+                  aria-expanded={servicesOpen}
+                  aria-controls="footer-services"
+                  className="flex w-full items-center justify-between gap-3 text-left text-sm text-white/50 transition-colors hover:text-white"
+                >
+                  <span>Services</span>
+                  <ChevronDown
+                    className={`h-4 w-4 text-red-500 transition-transform duration-200 ${
+                      servicesOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                {servicesOpen && (
+                  <ul id="footer-services" className="mt-3 space-y-2 border-l border-white/10 pl-4">
+                    <li>
+                      <Link
+                        href="/services"
+                        className="text-white/35 hover:text-white/70 transition-colors text-xs leading-5"
+                      >
+                        All Services
+                      </Link>
+                    </li>
+                    {serviceLinks.map((link) => (
+                      <li key={link.name}>
+                        <Link
+                          href={link.href}
+                          className="text-white/35 hover:text-white/70 transition-colors text-xs leading-5"
+                        >
+                          {link.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
               {navLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-white/50 hover:text-white transition-colors text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <h4 className="mt-8 text-sm font-medium text-white/70 uppercase tracking-wider mb-4">
-              Service Pages
-            </h4>
-            <ul className="space-y-3">
-              {serviceLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}

@@ -56,9 +56,28 @@ const cardVariants = {
   },
 }
 
+const metricEntrances = [
+  {
+    hidden: { opacity: 0, x: -34, rotate: -5, scale: 0.92 },
+    visible: { opacity: 1, x: 0, rotate: 0, scale: 1 },
+  },
+  {
+    hidden: { opacity: 0, y: 34, rotate: 4, scale: 0.9 },
+    visible: { opacity: 1, y: 0, rotate: 0, scale: 1 },
+  },
+  {
+    hidden: { opacity: 0, y: -30, rotate: -4, scale: 0.94 },
+    visible: { opacity: 1, y: 0, rotate: 0, scale: 1 },
+  },
+  {
+    hidden: { opacity: 0, x: 34, rotate: 5, scale: 0.9 },
+    visible: { opacity: 1, x: 0, rotate: 0, scale: 1 },
+  },
+]
+
 export function Projects() {
   return (
-    <section id="projects" className="relative py-24 px-6 overflow-hidden">
+    <section id="projects" className="relative py-16 md:py-24 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[#0a0a0f]" />
 
@@ -197,13 +216,31 @@ export function Projects() {
               {featuredMetrics.map((metric, index) => (
                 <motion.div
                   key={metric.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                  initial="hidden"
+                  whileInView="visible"
+                  variants={metricEntrances[index % metricEntrances.length]}
+                  viewport={{ once: false, amount: 0.45 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 360,
+                    damping: 22,
+                    delay: index * 0.08,
+                  }}
                   className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/[0.02] transition-colors hover:bg-white/[0.05]"
                 >
-                  <metric.icon className="w-8 h-8 text-red-500 mb-2" />
+                  <motion.div
+                    initial={{ scale: 0.72, rotate: -10 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
+                    viewport={{ once: false, amount: 0.65 }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 440,
+                      damping: 18,
+                      delay: 0.12 + index * 0.08,
+                    }}
+                  >
+                    <metric.icon className="w-8 h-8 text-red-500 mb-2" />
+                  </motion.div>
                   <span className="text-2xl font-bold text-white">{metric.value}</span>
                   <span className="text-[10px] text-white/40 uppercase tracking-wide">{metric.label}</span>
                 </motion.div>

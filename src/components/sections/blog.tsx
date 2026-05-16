@@ -46,7 +46,7 @@ export function Blog({ posts }: BlogProps) {
   if (!featured) return null
 
   return (
-    <section id="blog" className="relative py-24 px-6 overflow-hidden">
+    <section id="blog" className="relative py-16 md:py-24 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[#0a0a0f]" />
 

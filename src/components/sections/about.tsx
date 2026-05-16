@@ -57,7 +57,7 @@ const cardVariants = {
 
 export function About() {
   return (
-    <section id="about" className="relative py-24 px-6 overflow-hidden">
+    <section id="about" className="relative py-16 md:py-24 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[#0a0a0f]" />
 
