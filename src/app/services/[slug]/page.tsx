@@ -10,7 +10,7 @@ import {
   HelpCircle,
   Layers,
   MapPin,
-  Sparkles,
+  MessageSquareText,
 } from 'lucide-react'
 import {
   getRelatedServices,
@@ -303,7 +303,7 @@ export default async function ServiceDetailPage({ params }: Props) {
         <div className="mx-auto max-w-6xl rounded-3xl border border-white/10 bg-gradient-to-br from-red-600/[0.12] to-white/[0.03] p-8 md:p-10">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
             <div>
-              <Sparkles className="mb-5 h-10 w-10 text-red-500" />
+              <MessageSquareText className="mb-5 h-10 w-10 text-red-500" />
               <h2 className="text-3xl font-bold text-white md:text-4xl">
                 Want this built for your product?
               </h2>

@@ -44,12 +44,9 @@ export function Hero() {
   const [useLightEffects, setUseLightEffects] = useState(false)
 
   useEffect(() => {
-    const ua = window.navigator.userAgent
-    const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|Edg/.test(ua)
-    const isTouch = window.matchMedia('(pointer: coarse)').matches
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    setUseLightEffects(isSafari || isTouch || reduceMotion)
+    setUseLightEffects(reduceMotion)
   }, [])
 
   const scrollToSection = (id: string) => {

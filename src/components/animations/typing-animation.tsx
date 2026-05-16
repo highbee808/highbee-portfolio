@@ -27,12 +27,9 @@ export function TypingAnimation({
   const currentPhrase = phrases[currentPhraseIndex]
 
   useEffect(() => {
-    const ua = window.navigator.userAgent
-    const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|Edg/.test(ua)
-    const isTouch = window.matchMedia('(pointer: coarse)').matches
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    setUseStaticText(isSafari || isTouch || reduceMotion)
+    setUseStaticText(reduceMotion)
   }, [])
 
   const handleTyping = useCallback(() => {

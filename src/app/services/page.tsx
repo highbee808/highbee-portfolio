@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Bot, Code2, Rocket, Sparkles } from 'lucide-react'
+import { ArrowRight, Bot, Code2, MessageSquareText, Rocket } from 'lucide-react'
 import { servicePages } from '@/lib/service-pages'
 import { jsonLd, SITE_URL } from '@/lib/seo'
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
 }
 
-const icons = [Bot, Sparkles, Code2, Rocket]
+const icons = [Bot, MessageSquareText, Code2, Rocket]
 
 export default function ServicesPage() {
   const structuredData = {
@@ -72,7 +72,7 @@ export default function ServicesPage() {
 
           <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2">
             {servicePages.map((service, index) => {
-              const Icon = icons[index] || Sparkles
+              const Icon = icons[index] || Code2
 
               return (
                 <Link
