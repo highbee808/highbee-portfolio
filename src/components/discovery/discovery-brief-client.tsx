@@ -253,34 +253,35 @@ export function DiscoveryBriefClient({ brief }: { brief: DiscoveryBrief }) {
       <section className="px-5 py-8 sm:px-6 lg:py-12">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 flex flex-col gap-4 border-y border-white/10 px-4 py-5 sm:px-0 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start">
               <div>
                 <h2 className="text-3xl font-bold text-white">Discovery Questions</h2>
                 <p className="mt-2 text-sm leading-6 text-white/50">
                   Answer directly on this page, then copy or download the responses.
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={handleReset}
-                aria-label="Reset answers"
-                title="Reset answers"
-                className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center text-white/55 transition hover:text-white lg:hidden"
-              >
-                <RotateCcw className="h-6 w-6" />
-              </button>
             </div>
 
-            <div className="flex flex-wrap gap-2 sm:gap-3">
-              <ActionButton icon={Clipboard} label="Copy answers" onClick={handleCopyAnswers} />
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3 lg:justify-end">
+              <ActionButton
+                icon={Clipboard}
+                label="Copy answers"
+                onClick={handleCopyAnswers}
+                className="w-full sm:w-auto"
+              />
               <ActionButton
                 icon={Download}
                 label="Download answers"
                 onClick={handleDownloadAnswers}
+                className="w-full sm:w-auto"
               />
-              <div className="hidden lg:block">
-                <ActionButton icon={RotateCcw} label="Reset" onClick={handleReset} subtle />
-              </div>
+              <ActionButton
+                icon={RotateCcw}
+                label="Reset"
+                onClick={handleReset}
+                subtle
+                className="col-span-2 w-full sm:w-auto"
+              />
             </div>
           </div>
 
@@ -383,21 +384,23 @@ function ActionButton({
   label,
   onClick,
   subtle = false,
+  className = '',
 }: {
   icon: LucideIcon
   label: string
   onClick: () => void
   subtle?: boolean
+  className?: string
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl px-3 py-2 text-sm font-semibold transition sm:px-4 ${
+      className={`inline-flex min-h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-2xl px-2.5 py-2 text-[13px] font-semibold transition sm:gap-2 sm:px-4 sm:text-sm ${
         subtle
           ? 'border border-white/10 bg-white/[0.03] text-white/65 hover:border-white/20 hover:text-white'
           : 'bg-red-600 text-white hover:bg-red-700'
-      }`}
+      } ${className}`}
     >
       <Icon className="h-4 w-4" />
       {label}
