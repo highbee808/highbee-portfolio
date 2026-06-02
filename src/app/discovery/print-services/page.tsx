@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { PrintServicesDiscoveryClient } from './print-services-discovery-client'
+import { DiscoveryBriefClient } from '@/components/discovery/discovery-brief-client'
+import { getDiscoveryBrief } from '@/lib/discovery-briefs'
 
 export const metadata: Metadata = {
   title: 'Print & Branding Website Discovery Brief',
@@ -32,5 +33,7 @@ export const metadata: Metadata = {
 }
 
 export default function PrintServicesDiscoveryPage() {
-  return <PrintServicesDiscoveryClient />
+  const brief = getDiscoveryBrief('print-services')
+
+  return <DiscoveryBriefClient brief={brief} />
 }
