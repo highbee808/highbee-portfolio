@@ -1,10 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, Instrument_Serif } from "next/font/google";
-import { ChatWidget } from "@/components/chat/chat-widget";
-import { StickyHeader } from "@/components/ui/sticky-header";
-import { CustomCursor } from "@/components/ui/custom-cursor";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { SafariInit } from "@/components/SafariInit";
+import { SiteChrome } from "@/components/site-chrome";
 import { DEFAULT_OG_IMAGE, PERSON_NAME, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
@@ -112,13 +109,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){var ua=navigator.userAgent;var isIOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);var isSafari=/Safari/.test(ua)&&!/Chrome/.test(ua)&&!/CriOS/.test(ua);if(isIOS)document.documentElement.classList.add('is-ios');if(isSafari)document.documentElement.classList.add('is-safari');})();`,
-          }}
-        />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
@@ -128,11 +120,8 @@ export default function RootLayout({
         className={`${inter.variable} ${spaceGrotesk.variable} ${instrumentSerif.variable} min-h-screen antialiased`}
       >
         <SafariInit />
-        <CustomCursor />
-        <ScrollProgress />
-        <StickyHeader />
+        <SiteChrome />
         {children}
-        <ChatWidget />
       </body>
     </html>
   );
