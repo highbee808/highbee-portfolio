@@ -55,26 +55,156 @@ function getInitialAnswers(brief: DiscoveryBrief) {
   }, {})
 }
 
-function buildAnswersText(brief: DiscoveryBrief, answers: Record<string, string>) {
-  const lines = [
-    brief.title,
-    `Prepared for ${brief.preparedFor}`,
-    '',
-    'Please review the answers below and send them back when ready.',
-    '',
-  ]
+const followUpAnswerPattern = /\b(all|not yet|tbd|to be decided|none|n\/a)\b/i
 
+function getAnswer(answers: Record<string, string>, id: string) {
+  return answers[id]?.trim() || ''
+}
+
+function getFirstAnswer(answers: Record<string, string>, ids: string[]) {
+  return ids.map((id) => getAnswer(answers, id)).find(Boolean) || ''
+}
+
+function formatAnswer(answer: string) {
+  return answer || '[Not answered yet]'
+}
+
+function getMarkdownFileName(fileName: string) {
+  return fileName.replace(/\.[^.]+$/, '.md') || 'discovery-handoff.md'
+}
+
+function pushField(lines: string[], label: string, value: string) {
+  if (value) {
+    lines.push(`- **${label}:** ${value}`)
+  }
+}
+
+function pushQuestionGroups(
+  lines: string[],
+  brief: DiscoveryBrief,
+  answers: Record<string, string>
+) {
   brief.questionGroups.forEach((group) => {
-    lines.push(group.title)
-    lines.push('-'.repeat(group.title.length))
+    lines.push(`### ${group.title}`)
+    lines.push('')
 
     group.questions.forEach((question) => {
-      const answer = answers[question.id]?.trim() || '[Not answered yet]'
-      lines.push(question.label)
-      lines.push(answer)
+      lines.push(`**${question.label}**`)
+      lines.push('')
+      lines.push(formatAnswer(getAnswer(answers, question.id)))
       lines.push('')
     })
   })
+}
+
+function buildAnswersMarkdown(brief: DiscoveryBrief, answers: Record<string, string>) {
+  const followUpItems = brief.questionGroups.flatMap((group) =>
+    group.questions
+      .map((question) => {
+        const answer = getAnswer(answers, question.id)
+
+        if (!answer) {
+          return `- ${group.title}: ${question.label}`
+        }
+
+        if (followUpAnswerPattern.test(answer)) {
+          return `- ${group.title}: Confirm "${answer}" for "${question.label}"`
+        }
+
+        return ''
+      })
+      .filter(Boolean)
+  )
+
+  const lines = [
+    `# ${brief.title}`,
+    '',
+    `Prepared for ${brief.preparedFor}`,
+    '',
+    'This Markdown handoff is structured so it can be uploaded or pasted into another Codex chat for planning.',
+    '',
+  ]
+
+  lines.push('## Business Context')
+  pushField(lines, 'Business / project', getFirstAnswer(answers, ['business-name-location']))
+  pushField(lines, 'Overview', getFirstAnswer(answers, ['brand-story', 'business-summary']))
+  pushField(lines, 'Target customers', getFirstAnswer(answers, ['target-customers']))
+  pushField(lines, 'Products or services', getFirstAnswer(answers, ['service-list']))
+  pushField(lines, 'Launch priority', getFirstAnswer(answers, ['priority-features', 'must-haves']))
+  pushField(lines, 'Target date', getFirstAnswer(answers, ['launch-date']))
+  lines.push('')
+
+  lines.push('## Cleaned Client Answers')
+  lines.push('')
+  pushQuestionGroups(lines, brief, answers)
+
+  lines.push('## Known Requirements')
+  lines.push('')
+  brief.questionGroups.forEach((group) => {
+    const answeredQuestions = group.questions.filter((question) => getAnswer(answers, question.id))
+
+    if (answeredQuestions.length === 0) {
+      return
+    }
+
+    lines.push(`### ${group.title}`)
+    answeredQuestions.forEach((question) => {
+      lines.push(`- **${question.label}:** ${getAnswer(answers, question.id)}`)
+    })
+    lines.push('')
+  })
+
+  lines.push('## Missing Decisions')
+  lines.push('')
+  if (followUpItems.length > 0) {
+    lines.push(...followUpItems)
+  } else {
+    lines.push(
+      '- No obvious blank or placeholder answers were detected. Still review policies, scope, and operational commitments before implementation.'
+    )
+  }
+  lines.push('')
+
+  lines.push('## Recommended Next-Chat Prompt')
+  lines.push('')
+  lines.push('```markdown')
+  lines.push('Use the `local-business-discovery` skill first.')
+  lines.push('')
+  lines.push('This chat is for interactive planning, not immediate implementation.')
+  lines.push('')
+  lines.push('Context:')
+  lines.push(
+    'We are working from the Highbee project, but the final build will later live in a separate project/repo named after the client business.'
+  )
+  lines.push('')
+  lines.push('Your role:')
+  lines.push(
+    'Help us think through the business from the ground up. Ask smart questions, identify gaps, organize decisions, and turn the discovery answers into a strong website + social media execution strategy.'
+  )
+  lines.push('')
+  lines.push('First steps:')
+  lines.push(
+    '1. Check the available skill library for relevant skills that can help with this business planning process.'
+  )
+  lines.push('2. Use `local-business-discovery` as the main skill.')
+  lines.push(
+    '3. Suggest other useful skills or plugins for later phases, such as web app planning, social media/content planning, design systems, ecommerce/payment flow, Canva/Figma assets, deployment, or business research.'
+  )
+  lines.push('4. Review the uploaded discovery handoff.')
+  lines.push(
+    '5. Start by summarizing what we know, what is unclear, and what decisions we need to make first.'
+  )
+  lines.push('')
+  lines.push('Planning style:')
+  lines.push(
+    'Make this interactive. Ask before locking major decisions. Prioritize quality, clarity, and operational realism.'
+  )
+  lines.push('```')
+  lines.push('')
+
+  lines.push('## Raw Answers Appendix')
+  lines.push('')
+  pushQuestionGroups(lines, brief, answers)
 
   return lines.join('\n')
 }
@@ -102,7 +232,7 @@ export function DiscoveryBriefClient({ brief }: { brief: DiscoveryBrief }) {
   }
 
   const handleCopyAnswers = async () => {
-    const text = buildAnswersText(brief, answers)
+    const text = buildAnswersMarkdown(brief, answers)
 
     try {
       await navigator.clipboard.writeText(text)
@@ -122,17 +252,19 @@ export function DiscoveryBriefClient({ brief }: { brief: DiscoveryBrief }) {
   }
 
   const handleDownloadAnswers = () => {
-    const blob = new Blob([buildAnswersText(brief, answers)], { type: 'text/plain;charset=utf-8' })
+    const blob = new Blob([buildAnswersMarkdown(brief, answers)], {
+      type: 'text/markdown;charset=utf-8',
+    })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
 
     link.href = url
-    link.download = brief.downloadFileName
+    link.download = getMarkdownFileName(brief.downloadFileName)
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
-    setStatus('Answers downloaded as a text file.')
+    setStatus('Answers downloaded as a Markdown handoff.')
   }
 
   const handleReset = () => {
