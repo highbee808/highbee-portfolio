@@ -45,6 +45,13 @@ const iconMap: Record<DiscoveryIcon, LucideIcon> = {
   users: Users,
 }
 
+type EnhancedDiscoveryQuestion = DiscoveryQuestion & {
+  helper?: string
+  suggestedAnswer?: string
+  options?: string[]
+  choiceMode?: 'single' | 'multiple'
+}
+
 function getInitialAnswers(brief: DiscoveryBrief) {
   return brief.questionGroups.reduce<Record<string, string>>((answers, group) => {
     group.questions.forEach((question) => {
@@ -71,6 +78,10 @@ function formatAnswer(answer: string) {
 
 function getMarkdownFileName(fileName: string) {
   return fileName.replace(/\.[^.]+$/, '.md') || 'discovery-handoff.md'
+}
+
+function getJsonFileName(fileName: string) {
+  return fileName.replace(/\.[^.]+$/, '.json') || 'discovery-handoff.json'
 }
 
 function pushField(lines: string[], label: string, value: string) {
@@ -209,6 +220,28 @@ function buildAnswersMarkdown(brief: DiscoveryBrief, answers: Record<string, str
   return lines.join('\n')
 }
 
+function buildAnswersJson(brief: DiscoveryBrief, answers: Record<string, string>) {
+  return JSON.stringify(
+    {
+      title: brief.title,
+      preparedFor: brief.preparedFor,
+      slug: brief.slug,
+      answers: brief.questionGroups.map((group) => ({
+        id: group.id,
+        title: group.title,
+        questions: group.questions.map((question) => ({
+          id: question.id,
+          label: question.label,
+          answer: getAnswer(answers, question.id),
+          suggestedAnswer: (question as EnhancedDiscoveryQuestion).suggestedAnswer || '',
+        })),
+      })),
+    },
+    null,
+    2
+  )
+}
+
 export function DiscoveryBriefClient({ brief }: { brief: DiscoveryBrief }) {
   const initialAnswers = useMemo(() => getInitialAnswers(brief), [brief])
   const [answers, setAnswers] = useState<Record<string, string>>(initialAnswers)
@@ -265,6 +298,27 @@ export function DiscoveryBriefClient({ brief }: { brief: DiscoveryBrief }) {
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
     setStatus('Answers downloaded as a Markdown handoff.')
+  }
+
+  const handleDownloadJson = () => {
+    const blob = new Blob([buildAnswersJson(brief, answers)], {
+      type: 'application/json;charset=utf-8',
+    })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+
+    link.href = url
+    link.download = getJsonFileName(brief.downloadFileName)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+    setStatus('Answers downloaded as structured JSON.')
+  }
+
+  const handlePrint = () => {
+    window.print()
+    setStatus('Print dialog opened. Choose Save as PDF if you want a PDF copy.')
   }
 
   const handleReset = () => {
@@ -403,8 +457,20 @@ export function DiscoveryBriefClient({ brief }: { brief: DiscoveryBrief }) {
               />
               <ActionButton
                 icon={Download}
-                label="Download answers"
+                label="Markdown"
                 onClick={handleDownloadAnswers}
+                className="w-full sm:w-auto"
+              />
+              <ActionButton
+                icon={FileText}
+                label="JSON"
+                onClick={handleDownloadJson}
+                className="w-full sm:w-auto"
+              />
+              <ActionButton
+                icon={Printer}
+                label="Print / PDF"
+                onClick={handlePrint}
                 className="w-full sm:w-auto"
               />
               <ActionButton
@@ -412,7 +478,7 @@ export function DiscoveryBriefClient({ brief }: { brief: DiscoveryBrief }) {
                 label="Reset"
                 onClick={handleReset}
                 subtle
-                className="col-span-2 w-full sm:w-auto"
+                className="w-full sm:w-auto"
               />
             </div>
           </div>
@@ -545,18 +611,76 @@ function QuestionField({
   value,
   onChange,
 }: {
-  question: DiscoveryQuestion
+  question: EnhancedDiscoveryQuestion
   value: string
   onChange: (id: string, value: string) => void
 }) {
   const fieldClassName =
     'mt-3 w-full rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-white/25 focus:border-red-500/60 focus:bg-black/35'
 
+  const selectedOptions = value
+    .split('\n')
+    .map((option) => option.trim())
+    .filter(Boolean)
+
+  const toggleOption = (option: string) => {
+    if (question.choiceMode === 'multiple') {
+      const nextOptions = selectedOptions.includes(option)
+        ? selectedOptions.filter((selectedOption) => selectedOption !== option)
+        : [...selectedOptions, option]
+
+      onChange(question.id, nextOptions.join('\n'))
+      return
+    }
+
+    onChange(question.id, option)
+  }
+
   return (
-    <label className="block rounded-2xl border border-white/10 bg-black/15 p-4">
-      <span className="text-sm font-medium leading-6 text-white/80">{question.label}</span>
+    <div className="block rounded-2xl border border-white/10 bg-black/15 p-4">
+      <label htmlFor={`question-${question.id}`} className="text-sm font-medium leading-6 text-white/80">
+        {question.label}
+      </label>
+      {question.helper && (
+        <span className="mt-2 block text-xs leading-5 text-white/42">{question.helper}</span>
+      )}
+      {question.suggestedAnswer && (
+        <button
+          type="button"
+          onClick={() => onChange(question.id, question.suggestedAnswer || '')}
+          className="mt-3 inline-flex rounded-full border border-red-400/25 bg-red-500/10 px-3 py-1.5 text-xs font-semibold text-red-100 transition hover:border-red-300/50 hover:bg-red-500/20"
+        >
+          Use suggested answer
+        </button>
+      )}
+      {question.options && question.options.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {question.options.map((option) => {
+            const selected =
+              question.choiceMode === 'multiple'
+                ? selectedOptions.includes(option)
+                : value.trim() === option
+
+            return (
+              <button
+                key={option}
+                type="button"
+                onClick={() => toggleOption(option)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                  selected
+                    ? 'border-red-300 bg-red-500 text-white'
+                    : 'border-white/10 bg-white/[0.04] text-white/55 hover:border-white/25 hover:text-white'
+                }`}
+              >
+                {option}
+              </button>
+            )
+          })}
+        </div>
+      )}
       {question.multiline ? (
         <textarea
+          id={`question-${question.id}`}
           value={value}
           onChange={(event) => onChange(question.id, event.target.value)}
           placeholder={question.placeholder}
@@ -565,12 +689,13 @@ function QuestionField({
         />
       ) : (
         <input
+          id={`question-${question.id}`}
           value={value}
           onChange={(event) => onChange(question.id, event.target.value)}
           placeholder={question.placeholder}
           className={fieldClassName}
         />
       )}
-    </label>
+    </div>
   )
 }
